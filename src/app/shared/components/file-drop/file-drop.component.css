@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap");
+
+/* Variables */
+:root {
+  --primary: #d90429;
+  --secondary: #1b2631;
+  --border: #8d99ae;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+  background-color: #1b2631;
+  border-radius: 10px;
+}
+
+/* Body Styles */
+/* body {
+  padding: 0;
+  margin: 0;
+  background-color: #17141d;
+  color: var(--secondary);
+  font-family: "DM Mono", monospace;
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+} */
+
+/* App Container Styles */
+#app {
+  h2 {
+    color: white;
+  }
+
+  /* File Upload Box Styles */
+  .file-input-box {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: auto;
+    background-color: #ffff;
+    padding: 20px;
+
+    /* Input Box Styles */
+    .input-box {
+      padding: 20px;
+      display: grid;
+      place-items: center;
+      border: 2px dashed #cacaca;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      cursor: pointer;
+
+      h4 {
+        margin: 0;
+      }
+    }
+
+    /* Small Text Styles */
+    small {
+      font-size: 12px;
+      color: #a3a3a3;
+    }
+
+    /* Selected Files Section Styles */
+    .wrapper-file-section {
+      .selected-files {
+        h5 {
+          margin-bottom: 10px;
+        }
+
+        /* File List Styles */
+        .file-list {
+          overflow-y: auto;
+          list-style-type: none;
+          padding: 0 10px 10px 0;
+          margin: 0;
+          transition: 0.3s all ease-in-out;
+
+          /* File Item Styles */
+          .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #cacaca;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+
+            &:not(:last-child) {
+              margin-bottom: 5px;
+            }
+
+            /* Remove Icon Styles */
+            .remove {
+              display: grid;
+              place-items: center;
+              color: #c0392b;
+              cursor: pointer;
+              transition: 0.3s all ease-in-out;
+
+              &:hover {
+                color: #e74c3c;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

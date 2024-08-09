@@ -1,0 +1,62 @@
+<div [ngClass]="size === 'small' ? 'flex-row' : 'flex-col'" class="flex bg-white rounded-lg shadow dark:bg-gray-800">
+  <!-- Image section -->
+  <div [ngClass]="size === 'small' ? 'w-24 h-24' : 'w-full'" class="relative">
+    <ng-container *ngIf="size === 'large'">
+      <app-image-slider class="slider" [images]="[
+        { url: worker.smallPreviewImageUrl!, alt: 'Small Preview' },
+        { url: worker.mediumPreviewImageUrl!, alt: 'Medium Preview' },
+        { url: worker.largePreviewImageUrl!, alt: 'Large Preview' }
+      ]" class="w-full h-[300px]"></app-image-slider>
+    </ng-container>
+    <img *ngIf="size === 'small'" [src]="worker.smallPreviewImageUrl || worker.logoUrl" alt="{{worker.serviceTitle}}"
+      class="object-cover w-full h-full rounded-l-lg">
+  </div>
+
+  <!-- Content section -->
+  <div class="flex-auto p-4" [ngClass]="size === 'small' ? 'flex flex-col justify-center' : ''">
+    <div class="flex flex-wrap items-start justify-between">
+      <h1 [ngClass]="size === 'small' ? 'text-base' : 'text-xl'" class="flex-auto font-semibold dark:text-gray-50 mb-2">
+        {{ worker.serviceTitle }}</h1>
+      <div [ngClass]="size === 'small' ? 'text-base' : 'text-xl'"
+        class="font-semibold text-gray-500 dark:text-gray-300">
+        {{ worker.perHourPrice?.toFixed(2) | currency : "INR"}}/hr
+      </div>
+    </div>
+
+    <ng-container *ngIf="size === 'large'">
+      <div class="mt-4 text-sm text-gray-700 dark:text-gray-300">
+        <p>{{ worker.description }}</p>
+      </div>
+      <div class="mt-4 mb-4 text-sm text-gray-500 dark:text-gray-300">
+        Skills:
+        <span *ngFor="let skill of worker.skills?.split(',')"
+          class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+          {{ skill.trim() }}
+        </span>
+      </div>
+      <div class="mb-4 text-sm font-medium">
+        <p class="text-white">Status:<span [ngClass]="worker.approved ? 'text-green-600':'text-red-600'"> {{
+            worker.approved ? 'Approved' : 'Not Available' }}</span></p>
+        <p class="text-white">Since: <span class="text-green-500">{{ worker.hireDate | date }}</span></p>
+      </div>
+    </ng-container>
+
+    <div class="flex mb-2 text-sm font-medium gap-2">
+      <button type="button" *ngIf="size === 'large'" (click)="bookNow.emit()"
+        class="py-2 px-4 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">
+        Book Now
+      </button>
+      <button type="button" *ngIf="size === 'small'" (click)="showDetails.emit()"
+        class="py-1 px-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-sm font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">
+        Details
+      </button>
+    </div>
+
+    <div *ngIf="size === 'large'" class="flex justify-end items-center">
+      <div class="flex gap-2 items-center ">
+        <p class="text-sm text-gray-500 dark:text-gray-300">{{'@'+ worker.user?.firstName }}</p>
+        <img [src]="worker.logoUrl" alt="" class="w-6 rounded-full aspect-square">
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="container mx-auto p-8">
+    <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Type to filter">
+    </mat-form-field>
+
+    <mat-table  #table [dataSource]="dataSource" class="w-full mt-4 scroll-m-1">
+        <!-- Data columns -->
+        <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">
+            <mat-header-cell *matHeaderCellDef class="text-nowrap">{{ col.header }}</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <ng-container [ngSwitch]="col.type">
+                    <span *ngSwitchCase="ColumnType.Text">{{ row[col.key] }}</span>
+                    <img *ngSwitchCase="ColumnType.Image" [src]="row[col.key]" alt="" class="rounded-full w-7" />
+                    <a *ngSwitchCase="ColumnType.Action" class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-nowrap"
+                        [routerLink]="row[col.key]" [title]="row[col.key]">{{col.header}}</a>
+                </ng-container>
+            </mat-cell>
+        </ng-container>
+
+        
+        <!-- Table rows -->
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+
+    <div *ngIf="dataSource.data.length <= 0" class="flex items-center justify-center h-20 rounded-md border border-gray-300 bg-white">
+        <svg class="w-8 h-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+            fill="currentColor">
+            <path fill-rule="evenodd" d="M8 9l4-4L12 20 8 16 4 12z" clip-rule="evenodd" />
+        </svg>
+
+        <span class="text-gray-500 text-sm ml-2">This list is currently empty.</span>
+    </div>
+
+    <!-- Pagination -->
+    <mat-paginator #paginator  [pageSizeOptions]="[5,10,20]"
+        showFirstLastButtons></mat-paginator>
+</div>

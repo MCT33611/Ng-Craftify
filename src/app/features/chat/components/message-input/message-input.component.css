@@ -1,0 +1,42 @@
+.message-input-container {
+    display: flex;
+    align-items: center;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--light-gray);
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+}
+
+button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: darken(var(--primary-color), 10%);
+}
+
+button:disabled {
+    background-color: var(--light-gray);
+    cursor: not-allowed;
+}
+
+.emoji-picker-popup {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}

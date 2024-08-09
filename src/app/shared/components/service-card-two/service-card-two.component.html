@@ -1,0 +1,21 @@
+<a [routerLink]="'../service/'+worker.id">
+    <mat-card
+        class="relative w-full rounded-lg overflow-hidden shadow-md group transition-all duration-300 ease-in-out">
+        <div class="aspect-w-1 aspect-h-1">
+            <img [src]="worker.smallPreviewImageUrl" alt="Service preview"
+                class="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110">
+        </div>
+        <div class="absolute top-0 right-0 p-4">
+            <div
+                class="flex items-center bg-black bg-opacity-30 rounded-full px-3 py-1 transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100">
+                <span class="mr-2 text-sm font-mono font-bold text-white">{{'@'+ worker.user?.firstName }}</span>
+                <img [src]="worker.user?.profilePicture" alt="User avatar" class="w-4 h-4 rounded-full object-cover">
+            </div>
+        </div>
+        <div
+            class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4 transition-all duration-300 ease-in-out transform translate-y-full group-hover:translate-y-0">
+            <h2 class="text-xl font-semibold text-white">{{ worker.serviceTitle}}</h2>
+            <p class="text-white mt-2">${{ worker.perHourPrice }}/hour</p>
+        </div>
+    </mat-card>
+</a>

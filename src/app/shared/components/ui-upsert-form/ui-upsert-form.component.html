@@ -1,0 +1,42 @@
+<div class="max-w-lg mx-auto p-6 rounded-md w-[100vw]">
+    <h2 class="text-3xl font-bold text-center mb-4">{{ title }}</h2>
+    <p class="text-lg mb-4">{{ description }}</p>
+
+    <ng-content></ng-content>
+
+    <div class="previews">
+        <div *ngFor="let file of files; track: file" class="preview">
+            <img class="preview-image" [src]="file.cdnUrl + '/-/preview/-/resize/x200/'" 
+                alt="{{file?.fileInfo?.originalFilename}}" [title]="file?.fileInfo?.originalFilename" />
+            <button class="preview-remove-button" type="button" (click)="handleRemoveClick(file.uuid)">×</button>
+        </div>
+        <div *ngIf="data?.profilePicture" class="preview">
+            <img class="preview-image" [src]="data?.profilePicture " alt="Profile Picture"
+                [title]="data?.profilePicture" />
+                <!-- + '/-/preview/-/resize/x200/' -->
+        </div>
+    </div>
+
+    <div class="p-3">
+        <lr-config ctx-name="my-uploader" pubkey="f13c51c57d817b68e829" max-local-file-size-bytes="10000000"
+            img-only="true" source-list="local, url, gdrive, gphotos"></lr-config>
+        <lr-file-uploader-regular ctx-name="my-uploader" class="my-config"></lr-file-uploader-regular>
+        <lr-upload-ctx-provider ctx-name="my-uploader" #ctxProvider></lr-upload-ctx-provider>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div *ngFor="let label of labels" class="mb-4">
+            <mat-form-field class="example-full-width">
+                <mat-label>{{ label | uppercase }}</mat-label>
+                <input type="text" matInput [formControlName]="label" placeholder="{{ label }}" />
+                <mat-error *ngIf="form.get(label)?.hasError('required')">{{ label | uppercase }} is
+                    <strong>required</strong></mat-error>
+            </mat-form-field>
+        </div>
+
+        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+            [hidden]="isDetails">
+            Submit
+        </button>
+    </form>
+</div>

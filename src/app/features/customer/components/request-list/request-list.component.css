@@ -1,0 +1,38 @@
+.booking-card {
+    transition: all 0.3s ease-in-out;
+}
+
+.booking-card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+mat-card-title {
+    font-size: 1.25rem;
+    /* equivalent to text-xl */
+    font-weight: 600;
+    /* equivalent to font-semibold */
+}
+
+mat-card-subtitle {
+    font-size: 0.875rem;
+    /* equivalent to text-sm */
+    color: #718096;
+    /* equivalent to text-gray-600 */
+}
+
+mat-chip {
+    font-size: 0.75rem;
+    /* equivalent to text-xs */
+    font-weight: 500;
+    /* equivalent to font-medium */
+}
+
+button {
+    display: flex;
+    align-items: center;
+}
+
+button>*:not(:last-child) {
+    margin-right: 0.25rem;
+    /* equivalent to space-x-1 */
+}

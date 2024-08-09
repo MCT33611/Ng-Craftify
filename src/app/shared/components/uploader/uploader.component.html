@@ -1,0 +1,18 @@
+<lr-config
+  [attr.ctx-name]="ctxName"
+  pubkey="5c65cbe91a1652ab23d9"
+  max-local-file-size-bytes="10000000"
+  [attr.multiple]="multiple"
+  img-only="true"
+  source-list="local, url, gdrive"
+></lr-config>
+
+<lr-file-uploader-regular
+  [attr.ctx-name]="ctxName"
+  class="my-config"
+></lr-file-uploader-regular>
+
+<lr-upload-ctx-provider
+  [attr.ctx-name]="ctxName"
+  #ctxProvider
+></lr-upload-ctx-provider>

@@ -1,0 +1,5 @@
+/* side-popup.component.scss */
+:host {
+    display: contents;
+    z-index: 99;
+}

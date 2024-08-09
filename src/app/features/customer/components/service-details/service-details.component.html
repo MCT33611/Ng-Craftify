@@ -1,0 +1,30 @@
+<section id="service-details" class="relative overflow-hidden">
+    <div class="container transition-all duration-300 ease-in-out" [ngClass]="{'translate-x-full': showReviews}">
+        <app-service-card [worker]="worker" size="large" (bookNow)="showBookingForm = true"></app-service-card>
+
+        <button (click)="showReviews = true"
+            class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center transition duration-300 ease-in-out transform hover:scale-105">
+            <img class="h-5 w-5 mr-2 transform rotate-180" src="../../../../../assets/icons/left-arrow.svg"
+                fill="currentColor">
+            Reviews
+        </button>
+    </div>
+
+    <div class="absolute top-0 left-0 w-full  transition-all duration-300 ease-in-out"
+        [ngClass]="{'translate-x-0': showReviews, 'translate-x-full': !showReviews}">
+        <app-review-rating [providerId]="worker.id!"></app-review-rating>
+
+        <button (click)="showReviews = false"
+            class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center transition duration-300 ease-in-out transform hover:scale-105">
+            Back to Details
+            <img src="../../../../../assets/icons/right-arrow.svg" class="h-5 w-5 ml-2" alt="">
+        </button>
+    </div>
+</section>
+
+<div [@slideInOut] *ngIf="showBookingForm"
+    class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <app-booking-form [provider]="worker" (close)="showBookingForm = false;"></app-booking-form>
+    </div>
+</div>

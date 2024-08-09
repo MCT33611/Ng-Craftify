@@ -1,0 +1,63 @@
+<!-- review-rating.component.html -->
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold mb-4">Reviews & Ratings</h2>
+
+    <!-- review-rating.component.html -->
+    <div class="mb-6 flex items-center">
+        <h3 class="text-lg font-semibold">Average Rating :</h3>
+        <span class="mx-2">{{ averageRating | number:'1.1-1' }} out of 5</span>
+        <div class="flex items-center">
+            <ng-container *ngIf="averageRating > 0">
+                <ng-container *ngFor="let _ of [].constructor(getStarRating(averageRating).filled)">
+                    <ion-icon name="star" class="text-yellow-400 text-2xl"></ion-icon>
+                </ng-container>
+                <ng-container *ngIf="getStarRating(averageRating).half">
+                    <ion-icon name="star-half" class="text-yellow-400 text-2xl"></ion-icon>
+                </ng-container>
+                <ng-container *ngFor="let _ of [].constructor(getStarRating(averageRating).empty)">
+                    <ion-icon name="star-outline" class="text-yellow-400 text-2xl"></ion-icon>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="averageRating === 0">
+                <ng-container *ngFor="let _ of [].constructor(5)">
+                    <ion-icon name="star-outline" class="text-gray-300 text-2xl"></ion-icon>
+                </ng-container>
+            </ng-container>
+            
+        </div>
+    </div>
+
+    <div class="review-list gap-3">
+        <div *ngFor="let review of reviews" class="review-item mb-6 p-4 border-b border-gray-200 shadow-md">
+            <div class="flex items-center mb-2">
+                <div class="flex mr-2">
+                    <ng-container *ngIf="review.rating.overallScore > 0">
+                        <ng-container *ngFor="let _ of [].constructor(getStarRating(review.rating.overallScore).filled)">
+                            <ion-icon name="star" class="text-yellow-400 text-xl"></ion-icon>
+                        </ng-container>
+                        <ng-container *ngIf="getStarRating(review.rating.overallScore).half">
+                            <ion-icon name="star-half" class="text-yellow-400 text-xl"></ion-icon>
+                        </ng-container>
+                        <ng-container *ngFor="let _ of [].constructor(getStarRating(review.rating.overallScore).empty)">
+                            <ion-icon name="star-outline" class="text-yellow-400 text-xl"></ion-icon>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="review.rating.overallScore === 0">
+                        <ng-container *ngFor="let _ of [].constructor(5)">
+                            <ion-icon name="star-outline" class="text-gray-300 text-xl"></ion-icon>
+                        </ng-container>
+                    </ng-container>
+                </div>
+                <span class="font-semibold ">{{ review.rating.overallScore | number:'1.1-1' }} stars</span>
+            </div>
+            <p class="text-gray-600 mb-2 text-left">{{ review.comment }}</p>
+            <p class="text-sm text-gray-500 text-right">
+                Posted on {{ review.createdAt | date }}
+            </p>
+        </div>
+    </div>
+    
+    <div *ngIf="reviews.length === 0" class="text-center text-gray-500 mt-4">
+        No reviews yet.
+    </div>
+</div>

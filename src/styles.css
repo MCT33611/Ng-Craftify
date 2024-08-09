@@ -1,0 +1,53 @@
+@import '@ctrl/ngx-emoji-mart/picker';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@media (max-width: 768px) {
+    .chat-list {
+        width: 100%;
+    }
+
+    .chat-window {
+        width: 100%;
+    }
+}
+
+@media (min-width: 769px) {
+    .app-container {
+        display: flex;
+    }
+
+    .chat-list {
+        width: 30%;
+    }
+
+    .chat-window {
+        width: 70%;
+    }
+}
+
+.scroll-container {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--light-gray) transparent;
+}
+
+.scroll-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--light-gray);
+    border-radius: 3px;
+}

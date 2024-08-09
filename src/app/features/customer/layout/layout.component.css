@@ -1,0 +1,9 @@
+/* Add this to your layout component's CSS */
+@media (max-width: 767px) {
+    main {
+        padding-top: 3.5rem;
+        /* Should match the header height */
+        padding-bottom: 4rem;
+        /* Should match the bottom nav height */
+    }
+}

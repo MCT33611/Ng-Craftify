@@ -1,0 +1,49 @@
+@if(showEmojiPicker){
+<div class="popup-header">
+  <button (click)="showEmojiPicker = false">
+    <ion-icon name="close-circle-outline"></ion-icon>
+  </button>
+</div>
+<div (blur)="showEmojiPicker = false" *ngIf="showEmojiPicker" class="emoji-picker-popup" [@popupAnimation]>
+  <emoji-mart class="absolute" (emojiClick)="addEmoji($event)">
+  </emoji-mart>
+</div>
+}
+
+
+<div class="max-w-3xl mx-auto mt-8">
+  <div *ngIf="fileObjectURLs.length > 0" class="mb-4 bg-gray-100 p-4 rounded-lg">
+    <div class="flex flex-wrap gap-2">
+      <div *ngFor="let url of fileObjectURLs; let i = index" class="relative">
+        <img [src]="url" class="h-16 w-16 object-cover rounded-lg shadow">
+        <button (click)="removeFile(i)"
+          class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+          &times;
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="flex items-center gap-2">
+    <app-audio-recorder (audioRecorded)="recorderdAudioHandler($event)"></app-audio-recorder>
+
+    <div class="w-full flex items-center space-x-2 bg-white border border-gray-300 rounded-lg shadow-sm">
+      <label for="file-input" class="p-2 hover:bg-gray-100 rounded-l-lg cursor-pointer">
+        <ion-icon name="attach-outline" class="text-blue-600 text-xl"></ion-icon>
+      </label>
+      <input id="file-input" #fileInput type="file" class="hidden" (change)="onFileSelected($event)" multiple max="5"
+        accept="image/*,video/*,audio/*">
+      <div class="p-2 hover:bg-gray-100 rounded-l-lg cursor-pointer" (click)="showEmojiPicker = !showEmojiPicker ">
+        <ion-icon name="happy-outline"></ion-icon>
+      </div>
+      <input type="text" [(ngModel)]="content" (ngModelChange)="onContentChange()" (keydown.enter)="onSend()"
+        placeholder="Type a message..." class="flex-grow p-2 focus:outline-none">
+
+      <button (click)="onSend()" [disabled]="!content.trim() && fileObjectURLs.length === 0"
+        class="p-2 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+        <ion-icon name="send"></ion-icon>
+      </button>
+    </div>
+  </div>
+
+
+</div>

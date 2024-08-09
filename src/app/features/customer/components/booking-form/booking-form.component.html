@@ -1,0 +1,35 @@
+<div class="container mx-auto p-4">
+    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <mat-form-field class="w-full">
+            <mat-label>Minimum Working Time (in hours, max 6)</mat-label>
+            <input title="time" matInput type="number" formControlName="workingTime" min="1">
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>Date</mat-label>
+            <input title="date" matInput [matDatepicker]="picker" formControlName="date" [min]="minDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>Location</mat-label>
+            <input matInput formControlName="locationName" placeholder="Enter location or select on map" readonly>
+            <mat-spinner matSuffix diameter="20" *ngIf="isLocationLoading"></mat-spinner>
+            <button mat-icon-button matSuffix (click)="openMapDialog()" type="button" [disabled]="isLocationLoading">
+                <mat-icon>map</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <button mat-button type="button" (click)="getCurrentLocation()" [disabled]="isLocationLoading">
+            Use Current Location
+        </button>
+
+        <div class="w-full flex justify-end gap-2">
+            <button type="button" mat-button (click)="close.emit()">close</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid" >
+                Book Now
+            </button>
+        </div>
+    </form>
+</div>

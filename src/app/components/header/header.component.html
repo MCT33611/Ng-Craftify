@@ -1,0 +1,40 @@
+<header id="header">
+    <mat-toolbar>
+        <a [routerLink]="role_based_home_route">
+
+            <span class="text-3xl font-bold">Craftify</span>
+        </a>
+        <span class="spacer"></span>
+        @if(authService.isLoggedIn()){
+
+        <div class="flex gap-5">
+
+            <a routerLink='/profile'>
+
+                <div class="flex justify-center items-center">
+                    <div class="flex items-center bg-[#382F32] py-1 px-2 rounded-full shadow-md gap-2 overflow-ellipsis cursor-pointer">
+                        <img *ngIf="profileStore.user()?.profilePicture" [src]="profileStore.user()?.profilePicture" alt="." class="rounded-full w-7" />
+
+                        <mat-icon *ngIf="!profileStore.user()?.profilePicture" >account_circle</mat-icon>
+
+                        <p class="text-sm text-center  font-thin text-white ">
+                            {{profileStore.user()?.firstName}}
+                        </p>
+                    </div>
+                </div>
+            </a>
+            <div class="flex items-center bg-red-700  px-5  rounded-full shadow-md gap-2 overflow-ellipsis text-white cursor-pointer">
+                <span (click)="logout()">logout</span>
+            </div>
+        </div>
+
+        }
+        @else{
+        <span>
+            <a routerLink="/auth/sign-in">sign-in</a>
+            /
+            <a routerLink="/auth/sign-up">sign-up</a>
+        </span>
+        }
+    </mat-toolbar>
+</header>

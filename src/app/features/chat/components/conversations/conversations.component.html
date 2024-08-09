@@ -1,0 +1,17 @@
+<div class="conversations-list">
+    @for(conv of list; track conv.id) {
+    <button class="conversation-item" [class.unread]="!conv.isRead" (click)="onConvSelect(conv.id)">
+        <img [src]="conv.pictureUrl" alt="{{ conv.title }}" class="avatar">
+        <div class="conversation-details">
+            <h3>{{ conv.title }}</h3>
+            <p class="message-preview">{{ conv.msgPreview }}</p>
+        </div>
+        <!-- @if(conv.unReadCount! > 0) {
+        <span class="unread-count">{{ conv.unReadCount }}</span>
+        } -->
+        @if(conv.isBlocked) {
+        <span class="blocked-icon">🚫</span>
+        }
+    </button>
+    }
+</div>

@@ -1,0 +1,39 @@
+<div id="app">
+    <h2>Upload Files</h2>
+    <div class="container">
+      <div class="file-input-box">
+        <div class="wrapper-file-input">
+          <div class="input-box" (click)="openFileInput()">
+            <h4>
+              <i class="fa-solid fa-upload"></i>
+              Choose File to upload
+            </h4>
+            <input
+              id='fileInput'
+              type="file"
+              hidden
+              (change)="handleFileChange($event)"
+              multiple
+            />
+          </div>
+          <small>Files Supported: PDF, TEXT, DOC, DOCX, JPG, PNG, SVG</small>
+        </div>
+  
+        <div class="wrapper-file-section">
+          <div class="selected-files" *ngIf="selectedFileNames.length">
+            <h5>Selected Files</h5>
+            <ul class="file-list" [style.height]="selectedFileNames.length ? 'max-height:220px' : 'height:auto'">
+              <li class="item" *ngFor="let f of selectedFileNames; let i = index">
+                 <!-- [key]="f.name" -->
+                <span class="name">{{ f.name }} ({{ formatFileSize(f.size) }})</span>
+                <div class="remove" (click)="removeFile(i)">
+                  <i class="fa-solid fa-trash-can"></i>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

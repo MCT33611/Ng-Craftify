@@ -1,0 +1,75 @@
+<div class="image-management">
+    <header class="header">
+        <h1> Preview & Desing Management</h1>
+    </header>
+
+    <div class="image-grid">
+        <div class="full-width-section">
+            <div class="image-section logo-section">
+                <h2>Logo</h2>
+                <div class="image-container flex flex-col justify-center items-center p-3">
+                    <div class="logo-container">
+                        <div class="logo-wrapper">
+                            <img [src]="worker.logoUrl || workerStore.worker()?.logoUrl || 'https://www.freeiconspng.com/thumbs/upload-icon/upload-icon-25.png'"
+                                alt="Logo" class="logo-image">
+                        </div>
+                    </div>
+                    <app-uploader (cdnUrl)="fileUploadSuccessHandler($event, 'logo')"
+                        [ctxName]="'logo-uploader'"></app-uploader>
+                </div>
+            </div>
+
+            <div class="image-section w-full">
+                <h2 class="text-lg md:text-xl font-semibold mb-2">Card Preview</h2>
+                <div class="image-container flex flex-col justify-center items-center mb-4 gap-2 p-3">
+                    <app-service-card [worker]="addCardImage(workerStore.worker()!,worker)"></app-service-card>
+                    <div class="w-full flex justify-center gap-3">
+                        <div class="flex flex-col gap-3">
+                            <app-service-card [worker]="addCardImage(workerStore.worker()!,worker)"
+                                size="small"></app-service-card>
+                            <app-service-card [worker]="addCardImage(workerStore.worker()!,worker)"
+                                size="small"></app-service-card>
+                        </div>
+                        <app-service-card-two class="w-1/4"
+                            [worker]="addCardImage(workerStore.worker()!,worker)"></app-service-card-two>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-2">
+                        <app-uploader (cdnUrl)="fileUploadSuccessHandler($event, 'smallPreview')"
+                            [ctxName]="'small-preview-uploader'"></app-uploader>
+                        <button mat-raised-button color="primary" (click)="openEditModal()"
+                            class="w-full sm:w-auto mt-2 sm:mt-0">
+                            Edit Service Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="half-width-section">
+            <div class="image-section">
+                <h2>Medium Preview</h2>
+                <div class="image-container">
+                    <img [src]="worker.mediumPreviewImageUrl || workerStore.worker()?.mediumPreviewImageUrl || 'https://www.freeiconspng.com/thumbs/upload-icon/upload-icon-25.png'"
+                        alt="Medium Preview" class="preview-image">
+                </div>
+                <app-uploader (cdnUrl)="fileUploadSuccessHandler($event, 'mediumPreview')"
+                    [ctxName]="'medium-preview-uploader'"></app-uploader>
+            </div>
+
+            <div class="image-section">
+                <h2>Large Preview</h2>
+                <div class="image-container">
+                    <img [src]="worker.largePreviewImageUrl || workerStore.worker()?.largePreviewImageUrl || 'https://www.freeiconspng.com/thumbs/upload-icon/upload-icon-25.png'"
+                        alt="Large Preview" class="preview-image">
+                </div>
+                <app-uploader (cdnUrl)="fileUploadSuccessHandler($event, 'largePreview')"
+                    [ctxName]="'large-preview-uploader'"></app-uploader>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button class="save-btn" (click)="save()">Save All Images</button>
+    </div>
+</div>

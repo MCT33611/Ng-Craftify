@@ -1,0 +1,45 @@
+/* service-list.component.css */
+
+.mat-mdc-card {
+    transition: all 0.3s ease-in-out;
+}
+
+.mat-mdc-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+
+
+/* service-list.component.css */
+.slider-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+    mask-image: linear-gradient(to right, black 80%, transparent 100%);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.slider-container::-webkit-scrollbar {
+    display: none;
+}
+
+.slider-items {
+    display: flex;
+    white-space: nowrap;
+}
+
+@media (hover: none) {
+    .slider-container {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+}
+
+/* Responsive styles */
+@media (max-width: 640px) {
+    .slider-items {
+        justify-content: flex-start;
+    }
+}

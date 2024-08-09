@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Edit Service Details</h2>
+<mat-dialog-content>
+    <form [formGroup]="editForm">
+        <mat-form-field class="w-full">
+            <mat-label>Service Title</mat-label>
+            <input matInput formControlName="serviceTitle" placeholder="Enter service title" />
+            <mat-error *ngIf="editForm.get('serviceTitle')?.hasError('required')">Service title is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>Price / Hour</mat-label>
+            <input type="number" matInput formControlName="perHourPrice" placeholder="Enter price per hour" />
+            <mat-error *ngIf="editForm.get('perHourPrice')?.hasError('required')">Price per hour is required</mat-error>
+            <mat-error *ngIf="editForm.get('perHourPrice')?.hasError('min')">Price per hour cannot be less than
+                0</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>Skills</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Enter your skills">
+                <mat-chip-row *ngFor="let skill of skills" (removed)="remove(skill)">
+                    {{skill}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + skill" type="button">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+            </mat-chip-grid>
+            <input placeholder="New skill" [matChipInputFor]="chipGrid"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)">
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" placeholder="Enter description"></textarea>
+            <mat-error *ngIf="editForm.get('description')?.hasError('required')">Description is required</mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!editForm.valid">Save</button>
+</mat-dialog-actions>

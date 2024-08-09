@@ -1,0 +1,110 @@
+<section class="py-12">
+  <div class="container mx-auto">
+    <div class="flex justify-center w-full">
+      <div class="w-2/3">
+        <!-- Part 1: Subscription Form -->
+        <div [ngClass]="{'hidden': showPlans}" class="transition-all duration-500">
+          <form [formGroup]="subscriptionForm" (ngSubmit)="onContinue()">
+
+
+            <mat-form-field class="w-full">
+              <mat-label>Service Title</mat-label>
+              <input matInput formControlName="serviceTitle" placeholder="Enter service title" />
+              <mat-error *ngIf="subscriptionForm.get('serviceTitle')?.hasError('required')">Service title is
+                required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+              <mat-label>Price / Hour</mat-label>
+              <input type="number" matInput formControlName="perHourPrice" placeholder="Enter price per hour" />
+              <mat-error *ngIf="subscriptionForm.get('perHourPrice')?.hasError('required')">Price per hour is
+                required</mat-error>
+              <mat-error *ngIf="subscriptionForm.get('perHourPrice')?.hasError('min')">Price per hour cannot be less
+                than 0</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+              <mat-label>Skills</mat-label>
+              <mat-chip-grid #chipGrid aria-label="Enter your skills">
+                <mat-chip-row *ngFor="let skill of skills" (removed)="remove(skill)">
+                  {{ skill }}
+                  <button matChipRemove [attr.aria-label]="'remove ' + skill" type="button">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              </mat-chip-grid>
+              <input placeholder="ex. perfection" #skillInput formControlName="skills" [matChipInputFor]="chipGrid"
+                [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event)" />
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let skill of filteredSkills | async" [value]="skill">
+                  {{ skill }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            
+            <mat-form-field class="w-full">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" placeholder="Enter description"></textarea>
+              <mat-error *ngIf="subscriptionForm.get('description')?.hasError('required')">Description is
+                required</mat-error>
+            </mat-form-field>
+
+            <h2 class="text-xl font-semibold text-blue-900">Upload your resume here (optional)</h2>
+            <app-file-drop class="w-full" (fileSelected)="onFileSelected($event)"></app-file-drop>
+
+            <div class="mt-4 flex justify-end">
+              <button mat-raised-button color="primary" type="submit" [disabled]="!subscriptionForm.valid">
+                Continue
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Part 2: Subscription Plans -->
+        <div [ngClass]="{'hidden': !showPlans}" class="transition-all duration-500">
+          <div class="w-full flex justify-center p-5">
+            <h2 class="text-3xl font-bold text-center text-purple-700 mb-8">Subscription Plans</h2>
+          </div>
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div *ngFor="let plan of plans; track plan"
+              class="flex flex-col items-center bg-white shadow-lg rounded-lg p-6 transform hover:scale-105 transition duration-300">
+              <h3 class="text-xl font-semibold text-blue-700">{{plan.title}}</h3>
+              <p class="text-3xl font-bold text-purple-700 mt-4">
+                {{plan.price | currency : 'INR'}}
+                <span class="text-lg text-gray-500">/month</span>
+              </p>
+              <p class="text-gray-600 mt-2">{{plan.duration}} Month</p>
+              <p class="text-gray-600 mt-4">{{plan.description}}</p>
+              <div class="border-t border-gray-300 p-6 text-center rounded-bl-lg">
+                <button type="button" (click)="buy(plan.id)"
+                  class="flex items-center mt-auto text-white bg-indigo-500 border-0 py-2 px-4 w-full focus:outline-none hover:bg-indigo-600 rounded">
+                  Buy now
+                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    class="w-4 h-4 ml-auto" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="plans?.length === 0"
+              class="flex items-center justify-center h-20 rounded-md border border-gray-300 bg-white">
+              <svg class="w-8 h-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd" d="M8 9l4-4L12 20 8 16 4 12z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-gray-500 text-sm ml-2">This list is currently empty.</span>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-start">
+            <button mat-raised-button color="primary" (click)="goBack()">
+              <mat-icon>arrow_back</mat-icon>
+              Go Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

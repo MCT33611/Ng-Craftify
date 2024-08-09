@@ -1,0 +1,8 @@
+<h2 mat-dialog-title class="text-xl font-bold mb-4">Verify Task Completion</h2>
+<mat-dialog-content class="mat-typography">
+  <p class="mb-4">Please enter the OTP sent to the customer's email to complete the task.</p>
+  <app-otp [email]="data.email" (otpVerified)="onOtpVerified()"></app-otp>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" class="mr-2">Cancel</button>
+</mat-dialog-actions>

@@ -1,0 +1,7 @@
+<div class="media-viewer-container">
+    <img *ngIf="isImage" [src]="media.cdnUrl" alt="" />
+    <video *ngIf="isVideo" controls>
+        <source [src]="media.cdnUrl" [type]="media.contentType">
+        Your browser does not support the video tag.
+    </video>
+</div>

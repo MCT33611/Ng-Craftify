@@ -1,0 +1,13 @@
+<div class="h-full bg-gray-800 text-white">
+    <div class="p-4 text-2xl font-semibold">
+        Management
+    </div>
+    <ul class="space-y-2">
+        <li *ngFor="let item of menuItems" class="flex items-center p-4 hover:bg-gray-700 cursor-pointer">
+            <img [src]="item.iconSrc" alt="{{ item.title }}" class="h-6 w-6 mr-4 text-white">
+            <a [routerLink]="item.route" class="flex-1 text-start">
+                {{ item.title }}
+            </a>
+        </li>
+    </ul>
+</div>

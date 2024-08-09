@@ -1,0 +1,42 @@
+<div class="p-6">
+    <h2 class="text-2xl font-bold mb-4">Submit Your Review</h2>
+    <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <mat-form-field class="w-full">
+            <mat-label>Your Comment</mat-label>
+            <textarea matInput formControlName="comment" rows="4" class="w-full"></textarea>
+        </mat-form-field>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Overall Rating</label>
+                <mat-slider min="1" max="5" step="1" tickInterval="1" class="w-full">
+                    <input matSliderThumb formControlName="overallScore">
+                </mat-slider>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Punctuality</label>
+                <mat-slider min="1" max="5" step="1" tickInterval="1" class="w-full">
+                    <input matSliderThumb formControlName="punctualityScore">
+                </mat-slider>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Professionalism</label>
+                <mat-slider min="1" max="5" step="1" tickInterval="1" class="w-full">
+                    <input matSliderThumb formControlName="professionalismScore">
+                </mat-slider>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Quality</label>
+                <mat-slider min="1" max="5" step="1" tickInterval="1" class="w-full">
+                    <input matSliderThumb formControlName="qualityScore">
+                </mat-slider>
+            </div>
+        </div>
+
+        <div class="flex justify-end space-x-2">
+            <button mat-button (click)="onCancel()" class="bg-gray-200 text-gray-800">Cancel</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="reviewForm.invalid">Submit
+                Review</button>
+        </div>
+    </form>
+</div>

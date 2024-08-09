@@ -1,0 +1,52 @@
+<div class="main-content">
+    <header class="topbar">
+        <h1>Dashboard</h1>
+    </header>
+    <div class="content">
+
+        <div class="card">
+            <h3>Total Customers</h3>
+            <p>{{customers.length}}</p>
+        </div>
+        <div class="cards">
+            <div class="card">
+                <h3>Workers</h3>
+                <p>{{workers.length}}</p>
+            </div>
+            <div class="card">
+                <h3>Tasks</h3>
+                <p>{{completedTaskCount}} tasks completed</p>
+            </div>
+            <div class="card">
+                <h3>Total Bookings</h3>
+                <p>{{bookings.length}}</p>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Profile</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (user of customers; track user.id) {
+                    <tr>
+                        <td><img [src]="user.profilePicture" alt=""  class="rounded-full w-5"></td>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr >
+                    <td class="w-full flex justify-center">
+                        <a routerLink="../profiles">view more <span class="hover:ms-2">>></span></a> 
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+</div>

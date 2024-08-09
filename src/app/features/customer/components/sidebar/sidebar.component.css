@@ -1,0 +1,63 @@
+:host {
+    flex-shrink: 0;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+@media (min-width: 768px) {
+    :host {
+        width: 4rem;
+        /* md:w-16 */
+        height: 100vh;
+    }
+}
+
+@media (min-width: 1024px) {
+    :host {
+        width: 16rem;
+        /* lg:w-64 */
+    }
+}
+
+@media (min-width: 768px) {
+    :host.expanded {
+        width: 16rem;
+        /* w-64 */
+    }
+}
+
+@media (max-width: 767px) {
+    :host {
+        height: auto;
+    }
+
+    :host ::ng-deep .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        height: 3.5rem;
+        /* Adjust this value to match your header height */
+    }
+
+    :host ::ng-deep .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        height: 4rem;
+        /* Adjust this value to match your bottom nav height */
+    }
+
+    .logout-button {
+        transition: all 0.3s ease-in-out;
+    }
+
+    @media (max-width: 767px) {
+        .logout-button {
+            display: none;
+        }
+    }
+}

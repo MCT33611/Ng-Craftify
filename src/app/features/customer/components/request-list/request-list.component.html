@@ -1,0 +1,100 @@
+<!-- booking-list.component.html -->
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Bookings</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <mat-card *ngFor="let booking of bookings.reverse()"class="booking-card">
+            <mat-card-header>
+                <mat-card-title class="text-xl font-semibold">{{booking.provider?.serviceTitle}}</mat-card-title>
+                <mat-card-subtitle>{{ booking.date | date:'shortDate' }}</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content class="mt-4">
+                <p class="text-lg font-medium">{{ booking.provider?.user?.firstName || 'Service' }}</p>
+                <p class="text-sm text-gray-600">Duration: {{ booking.workingTime }} hours</p>
+                <p class="text-sm text-gray-600">Location: {{ booking.locationName }}</p>
+
+                <div class="mt-4">
+                    <mat-chip-listbox>
+                        <mat-chip [ngClass]="getColorStatus(booking.status!)">
+                            {{ getStatus(booking.status!) }}
+                        </mat-chip>
+                    </mat-chip-listbox>
+                </div>
+            </mat-card-content>
+
+            <mat-card-actions class="flex flex-col gap-3 p-4">
+                <div class="flex flex-wrap gap-3 justify-end">
+                    <ng-container *ngIf="getStatus(booking.status!) === 'Accepted'">
+                        <button mat-raised-button color="primary" (click)="openMessageDialog(booking)"
+                            class="flex-grow sm:flex-grow-0">
+                            <mat-icon>message</mat-icon>
+                            Message
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="getStatus(booking.status!) === 'Pending'">
+                        <button mat-raised-button color="accent" (click)="openRescheduleDialog(booking)"
+                            class="flex-grow sm:flex-grow-0">
+                            <mat-icon>event</mat-icon>
+                            Reschedule
+                        </button>
+                        <button mat-raised-button color="warn" (click)="onCancel(booking)"
+                            class="flex-grow sm:flex-grow-0">
+                            <mat-icon>cancel</mat-icon>
+                            Cancel
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="getStatus(booking.status!) === 'Completed'">
+                        <button mat-raised-button color="primary" (click)="openReviewDialog(booking)"
+                            class="flex-grow sm:flex-grow-0">
+                            <mat-icon>rate_review</mat-icon>
+                            Leave Review
+                        </button>
+                    </ng-container>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+
+<!-- Reschedule Dialog -->
+<div [@slideInOut] *ngIf="showRescheduleForm"
+    class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <h2 class="text-2xl font-bold mb-4">Reschedule Booking</h2>
+        <form [formGroup]="rescheduleForm" (ngSubmit)="onRescheduleSubmit()" class="space-y-4">
+            <mat-form-field class="w-full">
+                <mat-label>Minimum Working Time (hours)</mat-label>
+                <input title="time" matInput type="number" formControlName="workingTime" min="1">
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+                <mat-label>Date</mat-label>
+                <input title="date" matInput [matDatepicker]="picker" formControlName="date" [min]="minDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+                <mat-label>Location</mat-label>
+                <input matInput formControlName="locationName" placeholder="Enter location or select on map" readonly>
+                <mat-spinner matSuffix diameter="20" *ngIf="isLocationLoading"></mat-spinner>
+                <button mat-icon-button matSuffix (click)="openMapDialog()" type="button"
+                    [disabled]="isLocationLoading">
+                    <mat-icon>map</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <button mat-button type="button" (click)="getCurrentLocation()" [disabled]="isLocationLoading">
+                Use Current Location
+            </button>
+
+            <div class="flex justify-end space-x-2 gap-2">
+                <button type="button" mat-button (click)="showRescheduleForm = false">Cancel</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="rescheduleForm.invalid">
+                    Reschedule
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

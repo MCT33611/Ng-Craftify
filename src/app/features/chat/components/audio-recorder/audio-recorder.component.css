@@ -1,0 +1,22 @@
+.record-button {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: #007bff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.record-button.recording {
+    background-color: #dc3545;
+}
+
+ion-icon {
+    font-size: 14px;
+    color: white;
+}

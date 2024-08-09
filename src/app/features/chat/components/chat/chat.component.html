@@ -1,0 +1,26 @@
+<div class="chat-container">
+    <div class="sidebar">
+        <app-conversations (onSelect)="onSelect($event)" [convesations]="convs" [currentUserId]="userId">
+        </app-conversations>
+    </div>
+    <div class="main-content">
+        @if(selectedConv){
+        <div class="header-container">
+            <app-chat-header [otherUser]="otherUser(selectedConv)!"></app-chat-header>
+        </div>
+        <div class="typing-indicator" *ngIf="isTyping[otherUser(selectedConv)?.id!]">
+            {{ otherUser(selectedConv)?.firstName }} is typing...
+        </div>
+        <div class="messages-container" #messageList >
+            <app-messages [conversation]="selectedConv" [currentUserId]="userId">
+            </app-messages>
+        </div>
+        <div class="input-container">
+            <app-message-input (send)="onSend($event);" (typing)="onTyping()"></app-message-input>
+        </div>
+        }
+        @else{
+        <app-emty></app-emty>
+        }
+    </div>
+</div>

@@ -1,0 +1,64 @@
+.messages-list {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-item {
+    max-width: 70%;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    background-color: var(--light-gray);
+    align-self: flex-start;
+}
+
+.message-item.my-message {
+    background-color: var(--primary-color);
+    color: var(--white);
+    align-self: flex-end;
+}
+
+/* .message-content {
+    margin-bottom: 5px;
+} */
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+.message-text {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 90%;
+    align-self: flex-start;
+}
+
+.my-message .message-text {
+    align-self: flex-end;
+}
+
+.message-time {
+    font-size: 12px;
+    color: #777;
+    text-align: right;
+}
+
+.my-message .message-time {
+    color: rgba(41, 41, 41, 0.699);
+}
+
+.deleted-message {
+    opacity: 0.6;
+    font-style: italic;
+}
+
+.deleted-message .message-content {
+    color: #888;
+}
+
+.my-message.deleted-message .message-content {
+    color: rgba(255, 255, 255, 0.7);
+}
