@@ -26,7 +26,9 @@
             ],
             "styles": [
               "src/custom-theme.scss",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/@ctrl/ngx-emoji-mart/picker.css",
+              "node_modules/plyr/dist/plyr.css"
             ],
             "scripts": []
           },
@@ -41,8 +43,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1.5mb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -91,8 +93,8 @@
               "src/assets"
             ],
             "styles": [
+              "src/custom-theme.scss",
               "src/styles.css",
-              "src/assets/css/leaflet.css",
               "node_modules/@ctrl/ngx-emoji-mart/picker.css",
               "node_modules/plyr/dist/plyr.css"
             ],

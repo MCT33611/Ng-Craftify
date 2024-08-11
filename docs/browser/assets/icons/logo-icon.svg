@@ -1,0 +1,11 @@
+<svg width="800" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <path id="wavePath" d="M0,100 Q50,150 100,100 T200,100 T300,100 T400,100 T500,100 T600,100 T700,100 T800,100"/>
+  </defs>
+  <text font-size="60" font-weight="bold">
+    <textPath href="#wavePath" startOffset="0%">
+      CRAFTIFY
+    </textPath>
+    <animate attributeName="startOffset" from="0%" to="100%" dur="3s" repeatCount="indefinite" />
+  </text>
+</svg>
