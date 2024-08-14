@@ -37,6 +37,7 @@
     "@types/jasmine": "^5.1.4",
     "@types/leaflet": "^1.9.12",
     "@uploadcare/blocks": "^0.50.4",
+    "@uploadcare/file-uploader": "^1.4.0",
     "angular-audio-context": "^36.0.15",
     "google-one-tap": "^1.0.6",
     "jasmine-core": "^5.2.0",
