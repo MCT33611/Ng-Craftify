@@ -5,6 +5,8 @@ import { HomeComponent } from '../../components/home/home.component';
 import { ServiceListComponent } from './components/service-list/service-list.component';
 import { ServiceDetailsComponent } from './components/service-details/service-details.component';
 import { RequestListComponent } from './components/request-list/request-list.component';
+import { ProfileModule } from '../profile/profile.module';
+import { ChatModule } from '../chat/chat.module';
 
 const routes: Routes = [{
   path:"",
@@ -34,11 +36,11 @@ const routes: Routes = [{
     
     {
       path:'profile',
-      loadChildren: () => import('../profile/profile.module').then(m => m.ProfileModule)
+      loadChildren: () => ProfileModule
     },
     {
       path:'chat',
-      loadChildren: ()=>import('../chat/chat.module').then(m => m.ChatModule)
+      loadChildren: ()=>ChatModule
     }
   ]
 }];

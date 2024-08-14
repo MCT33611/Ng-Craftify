@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ProfilesModule } from './modules/profiles/profiles.module';
+import { PlanManagementModule } from './modules/plan-management/plan-management.module';
+import { RequestManagementModule } from './modules/request-management/request-management.module';
 
 const routes: Routes = [
   {
@@ -19,15 +22,15 @@ const routes: Routes = [
       },
       {
         path:"profiles",
-        loadChildren:()=>import("./modules/profiles/profiles.module").then(m => m.ProfilesModule)
+        loadChildren:()=> ProfilesModule
       },     
       {
         path:"plan",
-        loadChildren:()=>import("./modules/plan-management/plan-management.module").then(m => m.PlanManagementModule)
+        loadChildren:()=> PlanManagementModule
       },
       {
         path:"request",
-        loadChildren:()=>import("./modules/request-management/request-management.module").then(m => m.RequestManagementModule)
+        loadChildren:()=> RequestManagementModule
       }
     ]
   }

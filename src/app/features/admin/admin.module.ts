@@ -12,7 +12,6 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UiDatatableComponent } from '../../shared/components/ui-datatable/ui-datatable.component';
 import { UiUpsertFormComponent } from '../../shared/components/ui-upsert-form/ui-upsert-form.component';
-import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 
 
 @NgModule({
@@ -32,7 +31,6 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
     UiDatatableComponent,
     UiUpsertFormComponent,
     SidebarComponent,
-    CanvasJSAngularChartsModule
   ]
 })
 export class AdminModule { }

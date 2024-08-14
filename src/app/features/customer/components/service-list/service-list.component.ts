@@ -5,7 +5,6 @@ import { CustomerService } from '../../services/customer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../../../../services/alert.service';
 import { ActivatedRoute } from '@angular/router';
-import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-service-list',

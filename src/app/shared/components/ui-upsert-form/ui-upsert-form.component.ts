@@ -2,7 +2,7 @@ import { CommonModule, UpperCasePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, ElementRef, OnChanges, SimpleChanges, ViewChild, inject } from '@angular/core';
 import * as LR from "@uploadcare/blocks";
 import { OutputFileEntry } from '@uploadcare/blocks';
-import "@uploadcare/blocks/web/lr-file-uploader-regular.min.css";
+//import "@uploadcare/blocks/web/lr-file-uploader-regular.min.css";
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../material/material.module';

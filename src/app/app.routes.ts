@@ -5,6 +5,11 @@ import { loggedInGuard } from './core/guards/logged-in.guard';
 import { roleGuard } from './core/guards/role.guard';
 import { IRoles } from './core/constants/roles';
 import { ProfileLayoutComponent } from './components/profile-layout/profile-layout.component';
+import { AuthenticationModule } from './features/authentication/authentication.module';
+import { ProfileModule } from './features/profile/profile.module';
+import { AdminModule } from './features/admin/admin.module';
+import { WorkerModule } from './features/worker/worker.module';
+import { CustomerModule } from './features/customer/customer.module';
 
 export const routes: Routes = [
 
@@ -17,7 +22,7 @@ export const routes: Routes = [
     {
         path: "auth",
         canActivate: [loggedInGuard],
-        loadChildren: () => import("../app/features/authentication/authentication.module").then(m => m.AuthenticationModule)
+        loadChildren:()=> AuthenticationModule
     },
     {
         path: "profile",
@@ -25,26 +30,26 @@ export const routes: Routes = [
         component: ProfileLayoutComponent,
         children: [{
             path: "",
-            loadChildren: () => import("../app/features/profile/profile.module").then(m => m.ProfileModule)
+            loadChildren: () => ProfileModule
         }]
     },
     {
         path: "admin",
         canActivate: [authGuard, roleGuard],
         data: { role: IRoles.Role_Admin },
-        loadChildren: () => import("../app/features/admin/admin.module").then(m => m.AdminModule)
+        loadChildren: () => AdminModule
     },
     {
         path: "worker",
         canActivate: [authGuard, roleGuard],
         data: { role: IRoles.Role_Worker },
-        loadChildren: () => import("../app/features/worker/worker.module").then(m => m.WorkerModule)
+        loadChildren: () => WorkerModule
     },
     {
         path: "customer",
         canActivate: [authGuard],
         data: { role: IRoles.Role_Customer },
-        loadChildren: () => import("../app/features/customer/customer.module").then(m => m.CustomerModule)
+        loadChildren: () => CustomerModule
     }
 
 

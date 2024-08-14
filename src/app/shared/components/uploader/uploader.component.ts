@@ -1,11 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, OnInit, OnDestroy, ViewChild, inject, Input, Output, EventEmitter } from '@angular/core';
 import * as LR from "@uploadcare/blocks";
 import { OutputFileEntry } from '@uploadcare/blocks';
-import "@uploadcare/blocks/web/lr-file-uploader-regular.min.css";
+//import "@uploadcare/blocks/web/lr-file-uploader-regular.min.css";
 import { ProfileService } from '../../../features/profile/services/profile.service';
 import { AlertService } from '../../../services/alert.service';
 import { ProfileStore } from '../../store/profile.store';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 
 @Component({

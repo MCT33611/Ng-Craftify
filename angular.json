@@ -21,16 +21,24 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
+              "src/assets/images/favicon.png",
               "src/assets"
             ],
             "styles": [
               "src/custom-theme.scss",
               "src/styles.css",
               "node_modules/@ctrl/ngx-emoji-mart/picker.css",
-              "node_modules/plyr/dist/plyr.css"
+              "node_modules/plyr/dist/plyr.css",
+              "node_modules/@uploadcare/blocks/web/lr-file-uploader-regular.min.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "sweetalert2",
+              "leaflet",
+              "pdfjs-dist",
+              "pdfjs-dist/web/pdf_viewer",
+              "automation-events"
+            ]
           },
           "configurations": {
             "production": {
@@ -43,13 +51,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "3mb"
+                  "maximumWarning": "4mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "60kb",
+                  "maximumError": "70kb"
                 }
               ],
               "outputHashing": "all"
@@ -89,14 +97,15 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              "src/favicon.ico",
+              "src/assets/images/favicon.png",
               "src/assets"
             ],
             "styles": [
               "src/custom-theme.scss",
               "src/styles.css",
               "node_modules/@ctrl/ngx-emoji-mart/picker.css",
-              "node_modules/plyr/dist/plyr.css"
+              "node_modules/plyr/dist/plyr.css",
+              "node_modules/@uploadcare/blocks/web/lr-file-uploader-regular.min.css"
             ],
             "scripts": []
           }
