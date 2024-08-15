@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NotificationType,Notification } from '../models/notification.models';
 
 
 type InputType = 'text' | 'textarea' | 'radio';
@@ -19,7 +20,7 @@ interface FormField {
 })
 export class AlertService {
 
-  
+
 
   // Method to show success toast
   success(message: string) {
@@ -57,16 +58,20 @@ export class AlertService {
     });
   }
 
-  // Method to show regular notification
-  notification(title: string, message: string, icon: 'success' | 'error' | 'warning' = 'success') {
+  notification(notification: Notification) {
+    const icon = this.getIconForNotificationType(notification.type);
+
     Swal.fire({
       icon: icon,
-      title: title,
-      text: message
+      title: notification.subject,
+      text: notification.content,
+      footer: `From: ${notification.senderId} | ${notification.timestamp.toLocaleString()}`,
+      position: 'bottom-end',
     });
+
+    notification.isRead = true;
   }
 
-  // Method to show confirmation dialog centered on screen with red color
   async confirm(title: string, message: string): Promise<boolean> {
     return Swal.fire({
       title: title,
@@ -81,4 +86,14 @@ export class AlertService {
     }).then((result) => result.isConfirmed);
   }
 
+  private getIconForNotificationType(type: NotificationType): 'success' | 'info' | 'warning' | 'error' {
+    switch (type) {
+      case NotificationType.Message:
+        return 'info';
+      case NotificationType.SystemAlert:
+        return 'warning';
+      default:
+        return 'info';
+    }
+  }
 }
