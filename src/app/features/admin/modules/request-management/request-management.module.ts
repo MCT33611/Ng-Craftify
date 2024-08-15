@@ -5,6 +5,7 @@ import { RequestManagementRoutingModule } from './request-management-routing.mod
 import { RequestListComponent } from './components/request-list/request-list.component';
 import { UiDatatableComponent } from '../../../../shared/components/ui-datatable/ui-datatable.component';
 import { RequestRejectComponent } from './components/request-reject/request-reject.component';
+import { DownloadAsExcelComponent } from '../../../../shared/components/download-as-excel/download-as-excel.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { RequestRejectComponent } from './components/request-reject/request-reje
   imports: [
     CommonModule,
     RequestManagementRoutingModule,
-    UiDatatableComponent
+    UiDatatableComponent,
+    DownloadAsExcelComponent
   ]
 })
 export class RequestManagementModule { }

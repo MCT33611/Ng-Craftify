@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { WorkerDetailsComponent } from './components/worker-details/worker-details.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ImageSliderComponent } from '../../../../shared/components/image-slider/image-slider';
+import { DownloadAsExcelComponent } from '../../../../shared/components/download-as-excel/download-as-excel.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { ImageSliderComponent } from '../../../../shared/components/image-slider
     UiUpsertFormComponent,
     RouterLink,
     PdfViewerModule,
-    ImageSliderComponent
+    ImageSliderComponent,
+    DownloadAsExcelComponent
   ]
 })
 export class ProfilesModule { }
