@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../../../../../../services/alert.service';
 import { Subject, takeUntil } from 'rxjs';
 import { UserService } from '../../services/user.service';
+import { IUser } from '../../../../../../models/iuser';
+import { EmailDialogComponent } from '../../../../../../shared/components/email-dialog/email-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-access',
@@ -10,49 +13,87 @@ import { UserService } from '../../services/user.service';
 })
 export class AccessComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-
+  private userId!: string;
+  user?: IUser;
   constructor(
     private _userService: UserService,
     private _route: ActivatedRoute,
     private _router: Router,
-    private _alertService: AlertService
+    private _alertService: AlertService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
-    this.accessChange();
+    this.loadUserAndConfirmAccess();
+    console.log("here:");
+    
   }
+  
+  async loadUserAndConfirmAccess() {
+    this._route.paramMap.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(async params => {
+      this.userId = params.get('id')!;
+      if (this.userId) {
+        this.user = await this._userService.get(this.userId).toPromise();
+        if (this.user && this.user.email) {
+          const confirmation = await this._alertService.confirm("user access change", "Are you sure you want to change access of this user?");
+          if (confirmation) {
+            this.openEmailDialog(this.user.email);
+          } else {
+            this._alertService.error("Confirmation denied");
+            this._router.navigate(['/admin/profiles']);
+          }
+        } else {
+          this._alertService.error("User email not found");
+        }
+      }
+    });
+  }
+  
+  openEmailDialog(email: string) {
+    const dialogRef = this.dialog.open(EmailDialogComponent, {
+      width: '600px',
+      data: { email: email }
+    });
+  
+    dialogRef.afterClosed().subscribe({
+      next: result => {
+        if (result) {
+          this._alertService.success('Email sent successfully');
+          if (this.userId) {
+            this.accessChange(this.userId);
+            setTimeout(()=>this._router.navigate(['/admin/profiles']),3000)
+          }
+        } else {
+          this._alertService.error('Email sending cancelled');
+          setTimeout(()=>this._router.navigate(['/admin/profiles']),3000)
+        }
+      }
+    });
+  }
+  accessChange(userId: string | null) {
+    if (userId) {
+      this._userService.AccessChange(userId).pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        complete: () => {
+          this._alertService.success("user access changed successfully");
+          this._router.navigate(['/admin/profiles']);
+        },
+        error: (err) => {
+          this._alertService.error(err.error?.title || 'An error occurred while changing user access');
+        }
+      });
+    } else {
+      this._alertService.error("user Id is not found");
+    }
+  }
+
+
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  async accessChange() {
-    const confirmation = await this._alertService.confirm("user access change", "Are you sure you want to change access of this user?");
-    if (confirmation) {
-      this._route.paramMap.pipe(
-        takeUntil(this.destroy$)
-      ).subscribe(params => {
-        const userId = params.get('id');
-        if (userId) {
-          this._userService.AccessChange(userId).pipe(
-            takeUntil(this.destroy$)
-          ).subscribe({
-            complete: () => {
-              this._alertService.success("user access changed successfully");
-              this._router.navigate(['/admin/profiles']);
-            },
-            error: (err) => {
-              this._alertService.error(err.error?.title || 'An error occurred while changing user access');
-            }
-          });
-        } else {
-          this._alertService.error("user Id is not found");
-        }
-      });
-    } else {
-      this._alertService.error("Confirmation denied");
-      this._router.navigate(['/admin/profiles']);
-    }
   }
 }

@@ -4,7 +4,7 @@ import { UsersListComponent } from './components/users-list/users-list.component
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { AccessComponent } from './components/access/access.component';
 import { WorkersListComponent } from './components/workers-list/workers-list.component';
-import { approvalComponent } from './components/approval/approval.component';
+import { ApprovalComponent } from './components/approval/approval.component';
 import { WorkerDetailsComponent } from './components/worker-details/worker-details.component';
 
 const routes: Routes = [
@@ -22,7 +22,7 @@ const routes: Routes = [
   },
   {
     path:"approval/:id",
-    component:approvalComponent
+    component:ApprovalComponent
   },
   {
     path:"user-list",

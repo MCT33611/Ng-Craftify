@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { ProfileStore } from '../../../shared/store/profile.store';
 import { TokenService } from '../../../services/token.service';
+import { NotificationService } from '../../../services/notification.service';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-layout',
@@ -11,10 +13,8 @@ export class LayoutComponent {
   profileStore = inject(ProfileStore)
   token = inject(TokenService);
   tokenService = inject(TokenService)
-  ngOnInit(): void {
-    this.profileStore.loadAll();
-  }
-
+  notificationService = inject(NotificationService);
+  private _alertService = inject(AlertService);
   menuItems = [
     {
       title: "Dashboard",
@@ -47,4 +47,37 @@ export class LayoutComponent {
       iconSrc: 'assets/icons/settings.svg'
     }
   ];
+
+
+  ngOnInit(): void {
+    this.profileStore.loadAll();
+    setTimeout(()=>this.notificationService.joinUserGroup(),3000)
+    setTimeout(()=>{
+      this.notificationService.getUnreadNotifications().subscribe({
+        next: (res) => {
+          console.log(res);
+          res.$values.forEach(note => {
+            this._alertService.notification(note);
+            this.notificationService.markAsRead(note.id)
+            console.log("marked1");
+            
+          })
+        }
+      })
+      this.notificationService.getNotifications().subscribe({
+        next: (res) => {
+          res.forEach(note => {
+            this._alertService.notification(note);
+            this.notificationService.markAsRead(note.id)
+            console.log("marked2");
+  
+          })
+        }
+      });
+      
+    },4000)
+  }
+  ngOnDestroy(): void {
+    this.notificationService.leave()
+  }
 }

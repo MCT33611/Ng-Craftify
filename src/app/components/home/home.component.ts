@@ -4,8 +4,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { ProfileStore } from '../../shared/store/profile.store';
-import { ProfileService } from '../../features/profile/services/profile.service';
+import { EmailDialogComponent } from '../../shared/components/email-dialog/email-dialog.component';
 
 @Component({
   selector: 'app-home',

@@ -47,7 +47,6 @@ export class UiDatatableComponent implements OnInit, AfterViewInit {
         this.paginator.length = this.dataSource.data.length;
       }
     }
-
   }
 
   applyFilter(event: Event): void {

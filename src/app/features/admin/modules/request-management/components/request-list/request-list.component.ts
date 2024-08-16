@@ -6,11 +6,12 @@ import { IBooking } from '../../../../../../models/ibooking';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
 import { IBookingStatus } from '../../../../../../models/ibooking-status';
+import { getFullDateFromString } from '../../../../../../shared/utils/getFullDateFromString';
 
 @Component({
   selector: 'app-request-list',
   templateUrl: './request-list.component.html',
-  styleUrl: './request-list.component.css'
+  styleUrls: ['./request-list.component.css']
 })
 export class RequestListComponent implements OnInit, OnDestroy {
   requestService = inject(RequestService);
@@ -28,30 +29,49 @@ export class RequestListComponent implements OnInit, OnDestroy {
   ];
 
   private destroy$ = new Subject<void>();
+
   ngOnInit(): void {
     this.requestService.getAllRequest().pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (res: any) => {
         if (res && Array.isArray(res.$values)) {
-          this.data = res.$values.map((booking: IBooking) => ({
-            ...booking,
-            locationName: booking.locationName?.split(',')[5] || 'N/A',
-            status: IBookingStatus[booking.status!] || 'Unknown',
-            customerName: booking.customer?.firstName || 'N/A',
-            providerName: booking.provider?.user?.firstName || 'N/A',
-            action: `/admin/request/reject/${booking.id}`
-          }));
+          this.data = res.$values.map((booking: IBooking) => {
+            let result: any = {
+              ...booking,
+              date: getFullDateFromString(booking?.bookedAt!),
+              locationName: booking.locationName?.split(',')[5] || 'N/A',
+              status: IBookingStatus[booking.status!] || 'Unknown',
+              customerName: booking.customer?.firstName || 'N/A',
+              providerName: booking.provider?.user?.firstName || 'N/A',
+            };
+            if (result.status !== IBookingStatus[IBookingStatus.Cancelled] &&
+              result.status !== IBookingStatus[IBookingStatus.Completed] &&
+              result.status !== IBookingStatus[IBookingStatus.Rejected]) {
+              
+              result['action'] = `/admin/request/reject/${booking.id}`;
+              this.columns = this.columns.filter(ele => ele.key == 'action')
+            }
+            return result;
+          });
         } else if (Array.isArray(res)) {
-          // If res is already an array, use it directly
-          this.data = res.map((booking: IBooking) => ({
-            ...booking,
-            locationName: booking.locationName?.split(',')[5] || 'N/A',
-            status: IBookingStatus[booking.status!] || 'Unknown',
-            customerName: booking.customer?.firstName || 'N/A',
-            providerName: booking.provider?.user?.firstName || 'N/A',
-            action: `/admin/request/reject/${booking.id}`
-          }));
+          this.data = res.map((booking: IBooking) => {
+            let result: any = {
+              ...booking,
+              date: getFullDateFromString(booking?.bookedAt!),
+              locationName: booking.locationName?.split(',')[5] || 'N/A',
+              status: IBookingStatus[booking.status!] || 'Unknown',
+              customerName: booking.customer?.firstName || 'N/A',
+              providerName: booking.provider?.user?.firstName || 'N/A',
+            };
+            if (result.status !== IBookingStatus[IBookingStatus.Cancelled] &&
+              result.status !== IBookingStatus[IBookingStatus.Completed] &&
+              result.status !== IBookingStatus[IBookingStatus.Rejected]) {
+              result['action'] = `/admin/request/reject/${booking.id}`;
+              this.columns = this.columns.filter(ele => ele.key == 'action')
+            }
+            return result;
+          });
         } else {
           console.error('Unexpected response format:', res);
           this.alertService.error('Unexpected response format from server');

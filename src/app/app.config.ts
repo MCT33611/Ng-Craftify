@@ -22,7 +22,8 @@ export const appConfig: ApplicationConfig = {
     {
       provide: AudioContext,
       useFactory: () => new (window.AudioContext || (window as any).webkitAudioContext)()
-    }
+    },
+
   ]
 };
 

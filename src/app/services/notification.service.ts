@@ -26,6 +26,7 @@ export class NotificationService {
       .withUrl(`${environment.API_BASE_URL}/hubs/notification`,{
         accessTokenFactory:()=>this.tokenService.getToken()!
       })
+      .withAutomaticReconnect()
       .build();
 
     this.hubConnection.start().catch(err => console.error(err));
@@ -40,8 +41,13 @@ export class NotificationService {
 
   joinUserGroup(userId = this.currentUserId) {
     this.hubConnection.invoke('JoinUserGroup', userId);
+    console.log("joined");
+    
   }
 
+  leave(){
+    this.hubConnection.stop()
+  }
   getUnreadNotifications(userId = this.currentUserId):Observable<IApiResponse<Notification>>{
     return this.http.get<IApiResponse<Notification>>(`${environment.API_BASE_URL}/api/notification/unread/${userId}`);
   }

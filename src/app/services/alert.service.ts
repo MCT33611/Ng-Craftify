@@ -67,7 +67,12 @@ export class AlertService {
       text: notification.content,
       footer: `From: ${notification.senderId} | ${notification.timestamp.toLocaleString()}`,
       position: 'bottom-end',
+      timer: 3000, // Timeout set to 3 seconds (3000 milliseconds)
+      timerProgressBar: true, // Shows a progress bar
+      toast: true, // Enables the toast style
+      showConfirmButton: false, // Hides the confirm button
     });
+    
 
     notification.isRead = true;
   }
