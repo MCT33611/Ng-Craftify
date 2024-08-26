@@ -88,3 +88,6 @@ a {
 a:hover {
   color: #0056b3;
 }
+.chart-container {
+  height: 300px;
+}

@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ProfileStore } from '../../../shared/store/profile.store';
 import { TokenService } from '../../../services/token.service';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
   selector: 'app-layout',
@@ -10,6 +11,13 @@ import { TokenService } from '../../../services/token.service';
 export class LayoutComponent {
   profileStore = inject(ProfileStore)
   tokenService = inject(TokenService)
+
+  constructor(
+    private _loading:LoadingService
+  ) {
+    _loading.hide()
+  }
+
   ngOnInit(): void {
     this.profileStore.loadAll();
   }
@@ -33,6 +41,11 @@ export class LayoutComponent {
       title: "Bookings Management",
       route: 'request/list',
       iconSrc: 'assets/icons/service.svg'
+    },
+    {
+      title: "Reports",
+      route: 'reports',
+      iconSrc: 'assets/icons/document-report.svg'
     },
     {
       title: "Settings",

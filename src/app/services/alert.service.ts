@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { NotificationType,Notification } from '../models/notification.models';
-
 
 type InputType = 'text' | 'textarea' | 'radio';
 
@@ -10,8 +8,8 @@ interface FormField {
   type: InputType;
   name: string;
   label: string;
-  options?: string[]; // For radio and checkbox
-  value?: string | boolean; // Default value
+  options?: string[]; 
+  value?: string | boolean; 
 }
 
 

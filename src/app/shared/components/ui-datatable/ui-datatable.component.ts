@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ColumnConfig, ColumnType } from './column-config.model';
 import { MaterialModule } from '../../material/material.module';
+import { LoadingDotsComponent } from '../loading-dots/loading-dots.component';
 
 @Component({
   selector: 'app-ui-datatable',
@@ -12,7 +13,8 @@ import { MaterialModule } from '../../material/material.module';
   imports: [
     CommonModule,
     RouterLink,
-    MaterialModule
+    MaterialModule,
+    LoadingDotsComponent
   ],
   templateUrl: './ui-datatable.component.html',
   styleUrls: ['./ui-datatable.component.css'],

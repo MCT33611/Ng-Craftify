@@ -1,17 +1,40 @@
-<div class="conversations-list">
-    @for(conv of list; track conv.id) {
-    <button class="conversation-item" [class.unread]="!conv.isRead" (click)="onConvSelect(conv.id)">
-        <img [src]="conv.pictureUrl" alt="{{ conv.title }}" class="avatar">
-        <div class="conversation-details">
-            <h3>{{ conv.title }}</h3>
-            <p class="message-preview">{{ conv.msgPreview }}</p>
+<div class="conversations-list p-4 bg-gray-100">
+    <!-- User profile card -->
+    <div class="mb-6 bg-white rounded-lg shadow-md p-4">
+      <div class="flex flex-col items-center">
+        <img [src]="profileStore.user()?.profilePicture ?? 'assets/images/4923944.png'" alt="User Profile" class="w-16 h-16 rounded-full mr-4">
+        <div>
+          <h2 class="text-xl font-semibold">You: {{ profileStore.user()?.firstName }} {{ profileStore.user()?.lastName }}</h2>
+          <p class="text-gray-600">{{ profileStore.user()?.email }}</p>
         </div>
-        <!-- @if(conv.unReadCount! > 0) {
-        <span class="unread-count">{{ conv.unReadCount }}</span>
-        } -->
-        @if(conv.isBlocked) {
-        <span class="blocked-icon">🚫</span>
-        }
+      </div>
+    </div>
+  
+    <!-- Conversation list -->
+    @for(conv of list; track conv.id) {
+    <button 
+      class="conversation-item w-full text-left mb-2 p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center"
+      [class.bg-blue-50]="!conv.isRead" 
+      (click)="onConvSelect(conv.id)"
+    >
+      <img [src]="conv.pictureUrl ?? 'assets/images/4923944.png'" alt="{{ conv.title }}" class="w-12 h-12 rounded-full mr-3">
+      <div class="conversation-details flex-grow">
+        <h3 class="font-semibold text-gray-800">{{ conv.title }}</h3>
+        <p class="text-sm text-gray-600 truncate">{{ conv.msgPreview }}</p>
+      </div>
+      @if(conv.unReadCount! > 0) {
+      <span class="unread-count bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-2">
+        {{ conv.unReadCount }}
+      </span>
+      }
+      @if(conv.isBlocked) {
+      <span class="blocked-icon text-red-500 ml-2" title="Blocked">🚫</span>
+      }
     </button>
     }
-</div>
+    @empty {
+      <div class="w-full flex-justify-cend">
+        <app-loading-dots></app-loading-dots>
+      </div>
+    }
+  </div>

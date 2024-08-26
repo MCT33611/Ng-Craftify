@@ -28,7 +28,6 @@
               "src/custom-theme.scss",
               "src/styles.css",
               "node_modules/@ctrl/ngx-emoji-mart/picker.css",
-              "node_modules/plyr/dist/plyr.css",
               "node_modules/@uploadcare/blocks/web/lr-file-uploader-regular.min.css"
             ],
             "scripts": [],
@@ -104,7 +103,6 @@
               "src/custom-theme.scss",
               "src/styles.css",
               "node_modules/@ctrl/ngx-emoji-mart/picker.css",
-              "node_modules/plyr/dist/plyr.css",
               "node_modules/@uploadcare/blocks/web/lr-file-uploader-regular.min.css"
             ],
             "scripts": []

@@ -8,6 +8,7 @@ import { AlertService } from '../../../services/alert.service';
 import { IRoles } from '../../../core/constants/roles';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthResponse } from '../../../models/auth-response';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
   selector: 'app-google-login-button',
@@ -20,7 +21,8 @@ export class GoogleLoginButtonComponent implements OnInit {
   constructor(
     private _auth: AuthService,
     private _router: Router,
-    private _alert: AlertService
+    private _alert: AlertService,
+    private _loading: LoadingService
   ) {
 
   }
@@ -39,7 +41,7 @@ export class GoogleLoginButtonComponent implements OnInit {
     google.accounts.id.prompt((notification: PromptMomentNotification) => { });
   }
   async handleCredentialResponse(response: CredentialResponse) {
-    
+    this._loading.show();
     this._auth.loginWithGoogle(response.credential).subscribe(
       {
         next: (res:AuthResponse) => {
@@ -48,7 +50,7 @@ export class GoogleLoginButtonComponent implements OnInit {
 
         error: (error: HttpErrorResponse) => {
           console.log(error);
-          
+          this._loading.hide();
           this._alert.error(`${error.status}`)
         }
       }

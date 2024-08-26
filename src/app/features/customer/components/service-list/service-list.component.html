@@ -21,6 +21,7 @@
                         {{ category }}
                     </a>
                 </li>
+                
             </ul>
         </div>
 
@@ -31,7 +32,13 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <app-service-card-two *ngFor="let worker of filteredWorkers" [worker]='worker'></app-service-card-two>
+        @for(worker of workers ; track $index){
+            <!-- *ngFor="let worker of filteredWorkers" -->
+            <app-service-card-two  [worker]='worker'></app-service-card-two>
+        }
+        @empty {
+            <app-loading-dots></app-loading-dots>
+        }
     </div>
 
     <div class="text-center mt-8 mb-20 md:mb-8">

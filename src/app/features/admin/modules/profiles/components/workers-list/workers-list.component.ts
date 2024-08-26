@@ -5,6 +5,7 @@ import { AlertService } from '../../../../../../services/alert.service';
 import { IWorker } from '../../../../../../models/iworker';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
+import { LoadingService } from '../../../../../../services/loading.service';
 
 @Component({
   selector: 'app-workers-list',
@@ -26,7 +27,11 @@ export class WorkersListComponent implements OnInit, OnDestroy {
   ];
 
   private destroy$ = new Subject<void>();
-
+  constructor(
+    private _loading:LoadingService
+  ) {
+    _loading.hide()
+  }
   ngOnInit(): void {
     this.userService.getAllWorkers().pipe(
       takeUntil(this.destroy$)
@@ -38,7 +43,7 @@ export class WorkersListComponent implements OnInit, OnDestroy {
             ...ele.user,
             details: `../worker-details/${ele.id}`,
             approvalChange: `../approval/${ele.userId}`,
-            accessChange: `../access/${ele.id}`
+            accessChange: `../access/${ele.userId}`
           }));
         } else {
           this.alertService.error('Unexpected response format');

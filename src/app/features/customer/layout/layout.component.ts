@@ -1,6 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NotificationService } from '../../../services/notification.service';
 import { AlertService } from '../../../services/alert.service';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
   selector: 'app-layout',
@@ -10,7 +11,11 @@ import { AlertService } from '../../../services/alert.service';
 export class LayoutComponent  implements OnInit,OnDestroy{
   notificationService = inject(NotificationService);
   private _alertService = inject(AlertService);
-  constructor() {}
+  constructor(
+    private _loading:LoadingService
+  ) {
+    _loading.hide()
+  }
 
   ngOnInit(): void {
     setTimeout(()=>this.notificationService.joinUserGroup(),3000)

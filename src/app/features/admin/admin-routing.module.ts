@@ -5,6 +5,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfilesModule } from './modules/profiles/profiles.module';
 import { PlanManagementModule } from './modules/plan-management/plan-management.module';
 import { RequestManagementModule } from './modules/request-management/request-management.module';
+import { ReportsComponent } from './components/reports/reports.component';
 
 const routes: Routes = [
   {
@@ -31,7 +32,12 @@ const routes: Routes = [
       {
         path:"request",
         loadChildren:()=> RequestManagementModule
+      },
+      {
+        path:"reports",
+        component:ReportsComponent
       }
+
     ]
   }
 ];

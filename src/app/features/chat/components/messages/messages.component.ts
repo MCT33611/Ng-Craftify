@@ -32,8 +32,6 @@ export class MessagesComponent implements OnChanges, OnInit {
   editingMessageId: string | null = null;
   editContent: string = '';
 
-  constructor(private ngZone: NgZone) { }
-
 
   ngOnChanges(): void {
     this.loadMessages();

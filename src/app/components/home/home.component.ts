@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { EmailDialogComponent } from '../../shared/components/email-dialog/email-dialog.component';
+import { LoadingDotsComponent } from '../../shared/components/loading-dots/loading-dots.component';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-home',
@@ -15,13 +17,15 @@ import { EmailDialogComponent } from '../../shared/components/email-dialog/email
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    LoadingDotsComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
   router = inject(Router);
+  
   searchTerm = '';
   onSearch() {
     if (this.searchTerm)

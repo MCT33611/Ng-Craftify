@@ -17,5 +17,5 @@ export interface Conversation {
     id: string;
     firstName: string;
     lastName: string;
-    profilePicture: string;
+    profilePicture?: string;
   }

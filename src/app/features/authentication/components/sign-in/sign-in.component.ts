@@ -11,6 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthResponse } from '../../../../models/auth-response';
 import { TokenService } from '../../../../services/token.service';
+import { LoadingService } from '../../../../services/loading.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -27,27 +28,30 @@ export class SignInComponent implements OnDestroy {
     private _auth: AuthService,
     private _router: Router,
     private _alert: AlertService,
-    private _token: TokenService
+    private _token: TokenService,
+    private _loading: LoadingService
   ) {
     this.loginForm = this._fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       rememberMe: [false]
     });
+    _loading.hide()
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
       const user: ILogin = this.loginForm.value;
+      this._loading.show()
 
       this._auth.login(user).pipe(
         takeUntil(this.destroy$)
       ).subscribe({
         next: (res: AuthResponse) => {
-
           this.navigateBasedOnRole(res.user.role);
         },
         error: (err: HttpErrorResponse) => {
+          this._loading.hide();
           this._alert.error(`${err.status}: Invalid credentials`);
         }
       });

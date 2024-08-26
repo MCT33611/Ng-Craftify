@@ -111,7 +111,7 @@ onSend(message: { files: File[], content: string }) {
       console.warn('Current user ID is not set');
       return null;
     }
-
+    
     return conv.peerOneId === this.userId ? conv.peerTwo : conv.peerOne;
   }
 

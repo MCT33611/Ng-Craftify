@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { handleError } from '../../../../shared/utils/handleError';
 import { IUser } from '../../../../models/iuser';
 import { IWorker } from '../../../../models/iworker';
+import { IApiResponse } from '../../../../models/api-response.models';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class DashbaordService {
     private _http : HttpClient
   ) { }
 
-    getAllBookings(): Observable<any> {
+    getAllBookings(): Observable<Object> {
       return this._http.get(`${environment.API_BASE_URL}/api/Booking`).pipe(catchError(handleError));
     }
 

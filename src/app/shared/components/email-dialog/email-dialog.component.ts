@@ -5,6 +5,7 @@ import { EmailService } from '../../../services/email.service';
 import { MaterialModule } from '../../material/material.module';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { LoadingService } from '../../../services/loading.service';
 @Component({
   selector: 'app-email-dialog',
   standalone: true,
@@ -28,7 +29,10 @@ export class EmailDialogComponent implements OnInit {
     private fb: FormBuilder,
     private emailService: EmailService,
     @Inject(MAT_DIALOG_DATA) public data: { email: string },
-  ) { }
+    private _loading : LoadingService
+  ) { 
+    _loading.hide()
+  }
 
   ngOnInit() {
     this.emailForm = this.fb.group({
@@ -89,6 +93,7 @@ export class EmailDialogComponent implements OnInit {
   }
 
   onSubmit() {
+    this._loading.show();
     const { to, subject } = this.emailForm.value;
     this.emailService.sendEmail(this.data.email, subject, this.previewHtml).subscribe({
       next: response => {

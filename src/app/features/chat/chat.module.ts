@@ -14,6 +14,7 @@ import { MediaViewerComponent } from './components/media-viewer/media-viewer.com
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { AudioContextModule } from 'angular-audio-context';
 import { AudioRecorderComponent } from './components/audio-recorder/audio-recorder.component';
+import { LoadingDotsComponent } from '../../shared/components/loading-dots/loading-dots.component';
 @NgModule({
   declarations: [
     ChatComponent,
@@ -33,7 +34,8 @@ import { AudioRecorderComponent } from './components/audio-recorder/audio-record
     MaterialModule,
     IonicModule,
     PickerComponent,
-    AudioContextModule.forRoot('balanced')
+    AudioContextModule.forRoot('balanced'),
+    LoadingDotsComponent
   ],
   bootstrap: [ChatComponent]
 })

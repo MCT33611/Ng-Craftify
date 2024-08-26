@@ -3,6 +3,7 @@ import { ProfileStore } from '../../../shared/store/profile.store';
 import { TokenService } from '../../../services/token.service';
 import { NotificationService } from '../../../services/notification.service';
 import { AlertService } from '../../../services/alert.service';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
   selector: 'app-layout',
@@ -48,11 +49,16 @@ export class LayoutComponent {
     }
   ];
 
+  constructor(
+    _loading: LoadingService
+  ) {
+    _loading.hide()
+  }
 
   ngOnInit(): void {
     this.profileStore.loadAll();
-    setTimeout(()=>this.notificationService.joinUserGroup(),3000)
-    setTimeout(()=>{
+    setTimeout(() => this.notificationService.joinUserGroup(), 3000)
+    setTimeout(() => {
       this.notificationService.getUnreadNotifications().subscribe({
         next: (res) => {
           console.log(res);
@@ -60,7 +66,7 @@ export class LayoutComponent {
             this._alertService.notification(note);
             this.notificationService.markAsRead(note.id)
             console.log("marked1");
-            
+
           })
         }
       })
@@ -70,12 +76,12 @@ export class LayoutComponent {
             this._alertService.notification(note);
             this.notificationService.markAsRead(note.id)
             console.log("marked2");
-  
+
           })
         }
       });
-      
-    },4000)
+
+    }, 4000)
   }
   ngOnDestroy(): void {
     this.notificationService.leave()

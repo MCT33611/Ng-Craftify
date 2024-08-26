@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../../../../../../services/alert.service';
-import { Subject, takeUntil } from 'rxjs';
+import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { IUser } from '../../../../../../models/iuser';
 import { EmailDialogComponent } from '../../../../../../shared/components/email-dialog/email-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-access',
@@ -35,7 +36,12 @@ export class AccessComponent implements OnInit, OnDestroy {
     ).subscribe(async params => {
       this.userId = params.get('id')!;
       if (this.userId) {
-        this.user = await this._userService.get(this.userId).toPromise();
+        try {
+          this.user = await firstValueFrom(this._userService.get(this.userId));
+        } catch (err:any) {
+          this._alertService.error(err.message);
+          this._router.navigate(['../'])
+        }
         if (this.user && this.user.email) {
           const confirmation = await this._alertService.confirm("user access change", "Are you sure you want to change access of this user?");
           if (confirmation) {

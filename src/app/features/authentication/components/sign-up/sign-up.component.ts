@@ -9,6 +9,7 @@ import { passwordStrengthValidator } from '../../../../shared/utils/passwordStre
 import { AlertService } from '../../../../services/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
+import { LoadingService } from '../../../../services/loading.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -23,9 +24,11 @@ export class SignUpComponent implements OnDestroy {
     private _fb: FormBuilder,
     private _auth: AuthService,
     private _alert: AlertService,
-    private _router: Router
+    private _router: Router,
+    private _loading: LoadingService
   ) {
     this.initForm();
+    _loading.hide();
   }
 
   private initForm(): void {
@@ -42,6 +45,7 @@ export class SignUpComponent implements OnDestroy {
 
   onSubmit(): void {
     if (this.registrationForm.valid) {
+      this._loading.show()
       const user: IRegistration = {
         email: this.registrationForm.value.email,
         firstName: this.registrationForm.value.firstName,
@@ -56,6 +60,7 @@ export class SignUpComponent implements OnDestroy {
           this._router.navigate([`/auth/otp/${user.email}`]);
         },
         error: (error: HttpErrorResponse) => {
+          this._loading.hide();
           this._alert.error(`${error.status}: ${error.error.title}`);
         }
       });
@@ -65,6 +70,7 @@ export class SignUpComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this._loading.hide()
     this.destroy$.next();
     this.destroy$.complete();
   }

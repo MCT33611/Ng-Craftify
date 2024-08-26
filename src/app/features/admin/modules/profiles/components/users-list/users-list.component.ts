@@ -6,6 +6,7 @@ import { IRoles } from '../../../../../../core/constants/roles';
 import { IUser } from '../../../../../../models/iuser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
+import { LoadingService } from '../../../../../../services/loading.service';
 
 @Component({
   selector: 'app-users-list',
@@ -27,6 +28,12 @@ export class UsersListComponent implements OnInit, OnDestroy {
   ];
 
   private destroy$ = new Subject<void>();
+
+  constructor(
+    private _loading:LoadingService
+  ) {
+    _loading.hide()
+  }
 
   ngOnInit(): void {
     this.userService.getAllCustomers().pipe(

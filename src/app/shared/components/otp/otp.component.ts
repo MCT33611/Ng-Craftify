@@ -5,6 +5,8 @@ import { AuthService } from '../../../features/authentication/services/auth.serv
 import { AlertService } from '../../../services/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
+import { LoadingComponent } from '../loading/loading.component';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
   selector: 'app-otp',
@@ -32,7 +34,8 @@ export class OtpComponent implements OnInit, OnDestroy {
     private _auth: AuthService,
     private _router: Router,
     private _route: ActivatedRoute,
-    private _alert: AlertService
+    private _alert: AlertService,
+    private _loading: LoadingService
   ) {
     this.otpForm = this._fb.group({
       otp1: ['', [Validators.required, Validators.maxLength(1)]],
@@ -40,6 +43,7 @@ export class OtpComponent implements OnInit, OnDestroy {
       otp3: ['', [Validators.required, Validators.maxLength(1)]],
       otp4: ['', [Validators.required, Validators.maxLength(1)]],
     });
+    _loading.hide()
   }
 
   ngOnInit(): void {

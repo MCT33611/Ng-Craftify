@@ -1,75 +1,45 @@
-<!-- <div class="messages-list">
-    <div class="message-item" *ngFor="let message of messages; let $index = index" (dblclick)="startEditing(message)"
-        [class.my-message]="message.isMy" [class.deleted-message]="message.isDeleted">
-        <div class="message-content">
-            <ng-container *ngIf="message.isDeleted">
-                <i>This message was deleted</i>
-            </ng-container>
-            <ng-container *ngIf="!message.isDeleted" >
-                <ng-container *ngFor="let media of message.media; let mediaIndex = index">
-                    <ng-container [ngSwitch]="DetermineMediaType(media.contentType)">
-                        <ng-container *ngSwitchCase="MediaType.Image">
-                            <img [src]="media.cdnUrl" alt="" (click)="openMediaViewer(media)">
-                        </ng-container>
-                        <ng-container *ngSwitchCase="MediaType.Video">
-                            <video [src]="media.cdnUrl" controls (click)="openMediaViewer(media)"></video>
-                        </ng-container>
-                        <ng-container *ngSwitchCase="MediaType.Audio">
-                            <audio [src]="media.cdnUrl" controls (click)="openMediaViewer(media)"></audio>
-                        </ng-container>
-                        <ng-container *ngSwitchCase="MediaType.Document">
-                            <a [href]="media.cdnUrl" target="_blank">
-                                <i class="fa fa-file-o"></i> {{ media.fileName }}
-                            </a>
-                        </ng-container>
-                    </ng-container>
-                </ng-container>
-                <span class="w-[90%] flex  " [class.justify-end]="message.isMy">
-                    {{ message.content }}
-                </span>
 
-            </ng-container>
-        </div>
-        <div class="message-time">
-            {{ message.time | date:'short' }}
-        </div>
-    </div>
-</div> -->
 
 
 <div class="messages-list">
-    <div class="message-item" *ngFor="let message of messages; let $index = index" (dblclick)="startEditing(message)"
-        [class.my-message]="message.isMy" [class.deleted-message]="message.isDeleted">
-        <div class="message-content">
-            <ng-container *ngIf="message.isDeleted">
-                <i>This message was deleted</i>
-            </ng-container>
-            <ng-container *ngIf="!message.isDeleted">
-                <ng-container *ngFor="let media of message.media; let mediaIndex = index">
-                    <ng-container [ngSwitch]="DetermineMediaType(media.contentType)">
-                        <ng-container *ngSwitchCase="MediaType.Image">
-                            <img [src]="media.cdnUrl" alt="" (click)="openMediaViewer(media)">
-                        </ng-container>
-                        <ng-container *ngSwitchCase="MediaType.Video">
-                            <video [src]="media.cdnUrl" controls (click)="openMediaViewer(media)"></video>
-                        </ng-container>
-                        <ng-container *ngSwitchCase="MediaType.Audio">
-                            <audio [src]="media.cdnUrl" controls (click)="openMediaViewer(media)"></audio>
-                        </ng-container>
-                        <ng-container *ngSwitchCase="MediaType.Document">
-                            <a [href]="media.cdnUrl" target="_blank">
-                                <i class="fa fa-file-o"></i> {{ media.fileName }}
-                            </a>
+    @for(message of messages;track $index){
+        <!-- *ngFor="let message of messages; let $index = index" -->
+        <div class="message-item"  (dblclick)="startEditing(message)"
+            [class.my-message]="message.isMy" [class.deleted-message]="message.isDeleted">
+            <div class="message-content">
+                <ng-container *ngIf="message.isDeleted">
+                    <i>This message was deleted</i>
+                </ng-container>
+                <ng-container *ngIf="!message.isDeleted">
+                    <ng-container *ngFor="let media of message.media; let mediaIndex = index">
+                        <ng-container [ngSwitch]="DetermineMediaType(media.contentType)">
+                            <ng-container *ngSwitchCase="MediaType.Image">
+                                <img [src]="media.cdnUrl" alt="" (click)="openMediaViewer(media)">
+                            </ng-container>
+                            <ng-container *ngSwitchCase="MediaType.Video">
+                                <video [src]="media.cdnUrl" controls (click)="openMediaViewer(media)"></video>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="MediaType.Audio">
+                                <audio [src]="media.cdnUrl" controls (click)="openMediaViewer(media)"></audio>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="MediaType.Document">
+                                <a [href]="media.cdnUrl" target="_blank">
+                                    <i class="fa fa-file-o"></i> {{ media.fileName }}
+                                </a>
+                            </ng-container>
                         </ng-container>
                     </ng-container>
+                    <span class="message-text" [class.justify-end]="message.isMy">
+                        {{ message.content }}
+                    </span>
                 </ng-container>
-                <span class="message-text" [class.justify-end]="message.isMy">
-                    {{ message.content }}
-                </span>
-            </ng-container>
+            </div>
+            <div class="message-time">
+                {{ message.time | date:'short' }}
+            </div>
         </div>
-        <div class="message-time">
-            {{ message.time | date:'short' }}
-        </div>
-    </div>
+    }
+    @empty {
+        <app-loading-dots></app-loading-dots>
+    }
 </div>

@@ -3,42 +3,25 @@
         <h1>Dashboard</h1>
     </header>
     <div class="content">
-
         <div class="cards">
             <div class="card">
                 <h3>Tasks</h3>
-                <p>50 tasks completed</p>
+                <p>{{completedTaskCount}} tasks completed</p>
             </div>
             <div class="card">
-                <h3>Resources</h3>
-                <p>30 resources used</p>
+                <h3>Total Bookings</h3>
+                <p>{{bookings.length}} bookings</p>
             </div>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Profile</th>
-                    <th>Nom</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (user of customersStore.users()?.slice(0, 5); track user.id) {
-                    <tr>
-                        <td><img [src]="user.profilePicture" alt=""  class="rounded-full w-5"></td>
-                        <td>{{ user.firstName }}</td>
-                        <td>{{ user.email }}</td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr >
-                    <td class="w-full flex justify-center">
-                        <a routerLink="../profiles">view more <span class="hover:ms-2">>></span></a> 
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
 
+        <div class="chart-container">
+            <h3>Booking Status Distribution</h3>
+            <ngx-charts-pie-chart
+                [results]="bookingPieChartData"
+                [legend]="true"
+                [labels]="true"
+                [doughnut]="true">
+            </ngx-charts-pie-chart>
+        </div>
     </div>
 </div>

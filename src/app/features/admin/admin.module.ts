@@ -12,13 +12,18 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UiDatatableComponent } from '../../shared/components/ui-datatable/ui-datatable.component';
 import { UiUpsertFormComponent } from '../../shared/components/ui-upsert-form/ui-upsert-form.component';
-
-
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ReportsComponent } from './components/reports/reports.component';
+import { IonicModule } from '@ionic/angular';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { LoadingDotsComponent } from '../../shared/components/loading-dots/loading-dots.component';
 @NgModule({
   declarations: [
     LayoutComponent,
     ContentComponent,
-    DashboardComponent
+    DashboardComponent,
+    ReportsComponent
   ],
   imports: [
     CommonModule,
@@ -31,6 +36,11 @@ import { UiUpsertFormComponent } from '../../shared/components/ui-upsert-form/ui
     UiDatatableComponent,
     UiUpsertFormComponent,
     SidebarComponent,
+    NgxChartsModule,
+    IonicModule,
+    FormsModule,
+    ReactiveFormsModule,
+    LoadingDotsComponent
   ]
 })
 export class AdminModule { }

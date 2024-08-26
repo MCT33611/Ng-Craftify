@@ -3,11 +3,13 @@ import { Conversation, User } from '../../../../models/conversation.model';
 import { ChatService } from '../../services/chat.service';
 import { catchError, map } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
+import { IUser } from '../../../../models/iuser';
+import { ProfileStore } from '../../../../shared/store/profile.store';
 
 interface List {
   id: string;
   title: string;
-  pictureUrl: string;
+  pictureUrl?: string;
   unReadCount?: number;
   msgPreview?: string;
   isBlocked: boolean;
@@ -25,10 +27,18 @@ export class ConversationsComponent implements OnChanges {
   @Input({ required: true }) currentUserId!: string;
 
   list: List[] = [];
-
   chat = inject(ChatService);
+  profileStore = inject(ProfileStore);
+
+  convLoading = false;
+
+
+  constructor() {
+    this.profileStore.loadAll();
+  }
 
   ngOnChanges(): void {
+    this.convLoading = true
     this.updateList();
   }
 
@@ -46,7 +56,7 @@ export class ConversationsComponent implements OnChanges {
           return {
             id: conv.id,
             title: otherUser?.firstName ?? 'Unknown',
-            pictureUrl: otherUser?.profilePicture ?? '',
+            pictureUrl: otherUser?.profilePicture ?? 'assets/images/moutain-sun-preview.jpg',
             unReadCount,
             msgPreview: 'latest message',
             isBlocked: conv.isBlocked,
@@ -56,21 +66,25 @@ export class ConversationsComponent implements OnChanges {
       );
     });
 
-    forkJoin(observables).subscribe(
-      (results: List[]) => {
+    forkJoin(observables).subscribe({
+      next: (results: List[]) => {
         this.list = results;
+        
       },
-      error => console.error('Error updating list:', error)
-    );
+      error: (error) => console.error('Error updating list:', error),
+      complete:() => this.convLoading = false
+    });
   }
 
   onConvSelect(convId: string) {
     let conv = this.convesations.find(ele => ele.id == convId);
     if (conv) {
       this.onSelect.emit(conv);
+      this.chat.markConversationAsRead(conv.id)
     } else {
       console.warn('Selected conversation not found:', convId);
     }
+
   }
 
   otherUser(conv: Conversation): User | null {

@@ -1,52 +1,54 @@
-<div class="p-6 max-w-3xl mx-auto">
-  <h2 class="text-2xl font-bold mb-4">Send Email</h2>
-
-  <div class="flex space-x-2 mb-4">
-    <ng-container *ngFor="let template of templates">
-      <button mat-raised-button [color]="selectedTemplate === template ? 'primary' : ''"
-        (click)="selectedTemplate = template" class="capitalize">
-        {{template}}
-      </button>
-    </ng-container>
+<div class="max-h-screen overflow-y-scroll my-2">
+  <div class="p-6 max-w-3xl mx-auto ">
+    <h2 class="text-2xl font-bold mb-4">Send Email</h2>
+  
+    <div class="flex space-x-2 mb-4">
+      <ng-container *ngFor="let template of templates">
+        <button mat-raised-button [color]="selectedTemplate === template ? 'primary' : ''"
+          (click)="selectedTemplate = template" class="capitalize">
+          {{template}}
+        </button>
+      </ng-container>
+    </div>
+  
+    <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="w-full mb-4" >
+        <mat-label>To</mat-label>
+        <input matInput formControlName="to" type="email" required >
+        <mat-error *ngIf="emailForm.get('to')?.invalid">Please enter a valid email address</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field class="w-full mb-4">
+        <mat-label>Subject</mat-label>
+        <input matInput formControlName="subject" required>
+      </mat-form-field>
+  
+      <ng-container [ngSwitch]="selectedTemplate">
+        <ng-container *ngSwitchCase="'custom'">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="customHtml">
+              Custom HTML
+            </label>
+            <textarea class="w-full  mb-4" [(ngModel)]="previewHtml" formControlName="customHtml"
+              (change)="updatePreview()"></textarea>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <mat-form-field class="w-full mb-4">
+            <mat-label>Content</mat-label>
+            <textarea matInput formControlName="content" rows="5" required></textarea>
+          </mat-form-field>
+        </ng-container>
+      </ng-container>
+  
+      <div class="mb-4">
+        <h3 class="text-lg font-semibold mb-2">Preview</h3>
+        <div class="border p-4 rounded" [innerHTML]="previewHtml"></div>
+      </div>
+  
+      <div class="flex justify-end"><button mat-button type="button" (click)="closeDialog()">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="emailForm.invalid && selectedTemplate != 'custom'">Send Email</button>
+      </div>
+    </form>
   </div>
-
-  <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
-    <mat-form-field class="w-full mb-4" >
-      <mat-label>To</mat-label>
-      <input matInput formControlName="to" type="email" required >
-      <mat-error *ngIf="emailForm.get('to')?.invalid">Please enter a valid email address</mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="w-full mb-4">
-      <mat-label>Subject</mat-label>
-      <input matInput formControlName="subject" required>
-    </mat-form-field>
-
-    <ng-container [ngSwitch]="selectedTemplate">
-      <ng-container *ngSwitchCase="'custom'">
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="customHtml">
-            Custom HTML
-          </label>
-          <textarea class="w-full  mb-4" [(ngModel)]="previewHtml" formControlName="customHtml"
-            (change)="updatePreview()"></textarea>
-        </div>
-      </ng-container>
-      <ng-container *ngSwitchDefault>
-        <mat-form-field class="w-full mb-4">
-          <mat-label>Content</mat-label>
-          <textarea matInput formControlName="content" rows="5" required></textarea>
-        </mat-form-field>
-      </ng-container>
-    </ng-container>
-
-    <div class="mb-4">
-      <h3 class="text-lg font-semibold mb-2">Preview</h3>
-      <div class="border p-4 rounded" [innerHTML]="previewHtml"></div>
-    </div>
-
-    <div class="flex justify-end"><button mat-button type="button" (click)="closeDialog()">Cancel</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="emailForm.invalid && selectedTemplate != 'custom'">Send Email</button>
-    </div>
-  </form>
 </div>

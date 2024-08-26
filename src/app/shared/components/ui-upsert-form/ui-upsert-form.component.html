@@ -11,7 +11,7 @@
             <button class="preview-remove-button" type="button" (click)="handleRemoveClick(file.uuid)">×</button>
         </div>
         <div *ngIf="data?.profilePicture" class="preview">
-            <img class="preview-image" [src]="data?.profilePicture " alt="Profile Picture"
+            <img class="preview-image" [src]="data?.profilePicture ?? 'assets/images/moutain-sun-preview.jpg'" alt="Profile Picture"
                 [title]="data?.profilePicture" />
                 <!-- + '/-/preview/-/resize/x200/' -->
         </div>

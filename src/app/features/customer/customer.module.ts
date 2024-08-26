@@ -17,6 +17,7 @@ import { BookingFormComponent } from './components/booking-form/booking-form.com
 import { RequestListComponent } from './components/request-list/request-list.component';
 import { ReviewDialogComponent } from './components/review-dialog/review-dialog.component';
 import { ReviewRatingComponent } from '../../shared/components/review-rating/review-rating.component';
+import { LoadingDotsComponent } from '../../shared/components/loading-dots/loading-dots.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ReviewRatingComponent } from '../../shared/components/review-rating/rev
     FormsModule,
     ServiceCardTwoComponent,
     ServiceCardComponent,
-    ReviewRatingComponent
+    ReviewRatingComponent,
+    LoadingDotsComponent
   ]
 })
 export class CustomerModule { }

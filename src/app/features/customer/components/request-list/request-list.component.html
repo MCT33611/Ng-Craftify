@@ -3,57 +3,63 @@
     <h1 class="text-3xl font-bold mb-6">Bookings</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <mat-card *ngFor="let booking of bookings.reverse()"class="booking-card">
-            <mat-card-header>
-                <mat-card-title class="text-xl font-semibold">{{booking.provider?.serviceTitle}}</mat-card-title>
-                <mat-card-subtitle>{{ booking.date | date:'shortDate' }}</mat-card-subtitle>
-            </mat-card-header>
-
-            <mat-card-content class="mt-4">
-                <p class="text-lg font-medium">{{ booking.provider?.user?.firstName || 'Service' }}</p>
-                <p class="text-sm text-gray-600">Duration: {{ booking.workingTime }} hours</p>
-                <p class="text-sm text-gray-600">Location: {{ booking.locationName }}</p>
-
-                <div class="mt-4">
-                    <mat-chip-listbox>
-                        <mat-chip [ngClass]="getColorStatus(booking.status!)">
-                            {{ getStatus(booking.status!) }}
-                        </mat-chip>
-                    </mat-chip-listbox>
-                </div>
-            </mat-card-content>
-
-            <mat-card-actions class="flex flex-col gap-3 p-4">
-                <div class="flex flex-wrap gap-3 justify-end">
-                    <ng-container *ngIf="getStatus(booking.status!) === 'Accepted'">
-                        <button mat-raised-button color="primary" (click)="openMessageDialog(booking)"
-                            class="flex-grow sm:flex-grow-0">
-                            <mat-icon>message</mat-icon>
-                            Message
-                        </button>
-                    </ng-container>
-                    <ng-container *ngIf="getStatus(booking.status!) === 'Pending'">
-                        <button mat-raised-button color="accent" (click)="openRescheduleDialog(booking)"
-                            class="flex-grow sm:flex-grow-0">
-                            <mat-icon>event</mat-icon>
-                            Reschedule
-                        </button>
-                        <button mat-raised-button color="warn" (click)="onCancel(booking)"
-                            class="flex-grow sm:flex-grow-0">
-                            <mat-icon>cancel</mat-icon>
-                            Cancel
-                        </button>
-                    </ng-container>
-                    <ng-container *ngIf="getStatus(booking.status!) === 'Completed'">
-                        <button mat-raised-button color="primary" (click)="openReviewDialog(booking)"
-                            class="flex-grow sm:flex-grow-0">
-                            <mat-icon>rate_review</mat-icon>
-                            Leave Review
-                        </button>
-                    </ng-container>
-                </div>
-            </mat-card-actions>
-        </mat-card>
+        @for(booking of bookings.reverse() ; track $index){
+            <!-- *ngFor="let booking of bookings.reverse()" -->
+            <mat-card class="booking-card">
+                <mat-card-header>
+                    <mat-card-title class="text-xl font-semibold">{{booking.provider?.serviceTitle}}</mat-card-title>
+                    <mat-card-subtitle>{{ booking.date | date:'shortDate' }}</mat-card-subtitle>
+                </mat-card-header>
+    
+                <mat-card-content class="mt-4">
+                    <p class="text-lg font-medium">{{ booking.provider?.user?.firstName || 'Service' }}</p>
+                    <p class="text-sm text-gray-600">Duration: {{ booking.workingTime }} hours</p>
+                    <p class="text-sm text-gray-600">Location: {{ booking.locationName }}</p>
+    
+                    <div class="mt-4">
+                        <mat-chip-listbox>
+                            <mat-chip [ngClass]="getColorStatus(booking.status!)">
+                                {{ getStatus(booking.status!) }}
+                            </mat-chip>
+                        </mat-chip-listbox>
+                    </div>
+                </mat-card-content>
+    
+                <mat-card-actions class="flex flex-col gap-3 p-4">
+                    <div class="flex flex-wrap gap-3 justify-end">
+                        <ng-container *ngIf="getStatus(booking.status!) === 'Accepted'">
+                            <button mat-raised-button color="primary" (click)="openMessageDialog(booking)"
+                                class="flex-grow sm:flex-grow-0">
+                                <mat-icon>message</mat-icon>
+                                Message
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="getStatus(booking.status!) === 'Pending'">
+                            <button mat-raised-button color="accent" (click)="openRescheduleDialog(booking)"
+                                class="flex-grow sm:flex-grow-0">
+                                <mat-icon>event</mat-icon>
+                                Reschedule
+                            </button>
+                            <button mat-raised-button color="warn" (click)="onCancel(booking)"
+                                class="flex-grow sm:flex-grow-0">
+                                <mat-icon>cancel</mat-icon>
+                                Cancel
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="getStatus(booking.status!) === 'Completed'">
+                            <button mat-raised-button color="primary" (click)="openReviewDialog(booking)"
+                                class="flex-grow sm:flex-grow-0">
+                                <mat-icon>rate_review</mat-icon>
+                                Leave Review
+                            </button>
+                        </ng-container>
+                    </div>
+                </mat-card-actions>
+            </mat-card>
+        }
+        @empty {
+            <app-loading-dots></app-loading-dots>
+        }
     </div>
 </div>
 

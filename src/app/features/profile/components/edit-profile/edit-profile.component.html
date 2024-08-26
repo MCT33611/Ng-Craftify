@@ -6,9 +6,7 @@
     </div>
     <div class="w-full flex flex-col justify-center items-center gap-2 p-2">
       <div class=" flex  items-center justify-center bg-green-500 rounded-full p-2">
-        <img *ngIf="profileStore.user()?.profilePicture" class="w-32 rounded-full" [src]="profileStore.user()?.profilePicture" alt="">
-        <ion-icon *ngIf="!profileStore.user()?.profilePicture"
-          [name]="'person-outline'"  class="text-xl text-blue-400 w-28 h-28"></ion-icon>
+        <img  class="w-32 rounded-full" [src]="profileStore.user()?.profilePicture ?? 'assets/images/4923944.png'" alt="">
       </div>
       <app-uploader (cdnUrl)="fileUploadSeccessHandler($event)"></app-uploader>
 

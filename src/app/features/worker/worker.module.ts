@@ -22,6 +22,8 @@ import { IonicModule } from '@ionic/angular';
 import { TaskCompletionDialogComponent } from './components/task-completion-dialog/task-completion-dialog.component';
 import { OtpComponent } from '../../shared/components/otp/otp.component';
 import { ReviewRatingComponent } from '../../shared/components/review-rating/review-rating.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { LoadingDotsComponent } from '../../shared/components/loading-dots/loading-dots.component';
 
 
 @NgModule({
@@ -50,6 +52,8 @@ import { ReviewRatingComponent } from '../../shared/components/review-rating/rev
     ImageSliderComponent,
     ServiceCardTwoComponent,
     IonicModule,
+    NgxChartsModule,
+    LoadingDotsComponent
   ]
 })
 export class WorkerModule { }

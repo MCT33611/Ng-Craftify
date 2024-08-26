@@ -3,9 +3,9 @@
   <div [ngClass]="size === 'small' ? 'w-24 h-24' : 'w-full'" class="relative">
     <ng-container *ngIf="size === 'large'">
       <app-image-slider class="slider" [images]="[
-        { url: worker.smallPreviewImageUrl!, alt: 'Small Preview' },
-        { url: worker.mediumPreviewImageUrl!, alt: 'Medium Preview' },
-        { url: worker.largePreviewImageUrl!, alt: 'Large Preview' }
+        { url: worker.smallPreviewImageUrl ?? 'assets/images/image-not-available.jpg', alt: 'Small Preview' },
+        { url: worker.mediumPreviewImageUrl ?? 'assets/images/image-not-available.jpg', alt: 'Medium Preview' },
+        { url: worker.largePreviewImageUrl ?? 'assets/images/image-not-available.jpg', alt: 'Large Preview' }
       ]" class="w-full h-[300px]"></app-image-slider>
     </ng-container>
     <img *ngIf="size === 'small'" [src]="worker.smallPreviewImageUrl || worker.logoUrl" alt="{{worker.serviceTitle}}"
