@@ -32,8 +32,11 @@ export class MessagesComponent implements OnChanges, OnInit {
   editingMessageId: string | null = null;
   editContent: string = '';
 
+  msgLoading = false;
+
 
   ngOnChanges(): void {
+    this.msgLoading = true;
     this.loadMessages();
   }
   ngOnInit(): void {
@@ -62,7 +65,8 @@ export class MessagesComponent implements OnChanges, OnInit {
           console.log(this.messages);
           
       },
-      error: (err: any) => console.error('Error loading messages:', err)
+      error: (err: any) => console.error('Error loading messages:', err),
+      complete:()=> this.msgLoading = false
     });
   }
 

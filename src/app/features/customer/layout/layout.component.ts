@@ -25,6 +25,8 @@ export class LayoutComponent  implements OnInit,OnDestroy{
           console.log(res);
           res.$values.forEach(note => {
             this._alertService.notification(note);
+            console.log(note.id);
+
             this.notificationService.markAsRead(note.id)
             console.log("marked1");
             
@@ -35,7 +37,13 @@ export class LayoutComponent  implements OnInit,OnDestroy{
         next: (res) => {
           res.forEach(note => {
             this._alertService.notification(note);
-            this.notificationService.markAsRead(note.id)
+            console.log(note.id);
+            
+            this.notificationService.markAsRead(note.id).subscribe({
+              error:(error)=>{
+                console.log(error);
+              }
+            })
             console.log("marked2");
   
           })

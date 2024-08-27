@@ -40,6 +40,8 @@
         </div>
     }
     @empty {
-        <app-loading-dots></app-loading-dots>
+        @if(msgLoading){
+            <app-loading-dots></app-loading-dots>
+        }
     }
 </div>

@@ -34,13 +34,14 @@ export class RequestListComponent implements OnInit, OnDestroy {
   isLocationLoading = false;
   currentLocation: Location | null = null;
   private destroy$ = new Subject<void>();
+  isRqstListLoading = false;
 
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
     private http: HttpClient,
     private alert: AlertService,
-    private router:Router,
+    private router: Router,
     private dialog: MatDialog
   ) {
     this.rescheduleForm = this.fb.group({
@@ -51,6 +52,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.isRqstListLoading = true;
     this.loadBookings();
   }
 
@@ -71,7 +73,8 @@ export class RequestListComponent implements OnInit, OnDestroy {
       error: (error: HttpErrorResponse) => {
         console.error('Error loading bookings:', error);
         this.bookings = []; // Set to empty array to avoid errors
-      }
+      },
+      complete: () => this.isRqstListLoading = false
     });
   }
 
@@ -113,10 +116,14 @@ export class RequestListComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: () => {
         this.showRescheduleForm = false;
-        this.loadBookings();
+
       },
       error: (error) => {
         console.error('Error rescheduling booking', error);
+      },
+      complete: () => {
+        this.isRqstListLoading = true;
+        this.loadBookings();
       }
     });
   }
@@ -130,12 +137,15 @@ export class RequestListComponent implements OnInit, OnDestroy {
       this.customerService.rescheduleBooking(updatedBooking).pipe(
         takeUntil(this.destroy$)
       ).subscribe({
-        next: () => {
+        next: (res) => {
           this.showRescheduleForm = false;
-          this.loadBookings();
         },
         error: (error) => {
           console.error('Error rescheduling booking', error);
+        },
+        complete: () => {
+          this.isRqstListLoading = true
+          this.loadBookings();
         }
       });
     }
@@ -207,13 +217,13 @@ export class RequestListComponent implements OnInit, OnDestroy {
   openReviewDialog(booking: any) {
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
       width: '500px',
-      data: { 
+      data: {
         bookingId: booking.id,
         providerId: booking.providerId,
         customerId: booking.customerId
       }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Review submitted:', result);

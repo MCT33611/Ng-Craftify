@@ -33,8 +33,13 @@
     </button>
     }
     @empty {
-      <div class="w-full flex-justify-cend">
-        <app-loading-dots></app-loading-dots>
-      </div>
+      @if(convLoading){
+        <div class="w-full flex-justify-cend">
+          <app-loading-dots></app-loading-dots>
+        </div>
+      }
+      @else {
+        <span class=" text-gray-700 text-right" title="empty list">please consider book a service inoder to start chatting with a worker</span>
+      }
     }
   </div>
