@@ -10,6 +10,7 @@ import { ProfileModule } from './features/profile/profile.module';
 import { AdminModule } from './features/admin/admin.module';
 import { WorkerModule } from './features/worker/worker.module';
 import { CustomerModule } from './features/customer/customer.module';
+import { ErrorComponent } from './components/error/error.component';
 
 export const routes: Routes = [
 
@@ -19,6 +20,7 @@ export const routes: Routes = [
         redirectTo: 'auth',
         pathMatch: 'full',
     },
+    { path: 'error', component: ErrorComponent },
     {
         path: "auth",
         canActivate: [loggedInGuard],

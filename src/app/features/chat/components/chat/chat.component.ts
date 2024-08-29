@@ -6,6 +6,7 @@ import {
   ViewChild,
   ElementRef,
   AfterViewChecked,
+  AfterViewInit,
 } from '@angular/core';
 import { Conversation, User } from '../../../../models/conversation.model';
 import { ChatService } from '../../services/chat.service';
@@ -20,7 +21,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
-export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('messageList') messageList!: ElementRef;
   convs: Conversation[] = [];
   userId!: string;
@@ -37,11 +38,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.loadConversations();
     this.initializeChatListeners();
     this.initializeTypingIndicator();
+    setTimeout(()=>this.scrollToBottom(),3000);
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
   scrollToBottom() {
     if (this.messageList) {
       this.messageList.nativeElement.scrollTop =

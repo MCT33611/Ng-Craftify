@@ -1,11 +1,14 @@
-import { Injectable } from '@angular/core';
+import { ErrorHandler, Injectable, NgZone } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class GlobalErrorHandlerService {
-
-  handleError(error: any): void {
-    console.error('An unhandled error occurred:', error);
+export class GlobalErrorHandlerService implements ErrorHandler {
+  handleError(error: HttpErrorResponse | Error | ErrorHandler): void {
+    console.error(error);
+    
   }
+  
 }

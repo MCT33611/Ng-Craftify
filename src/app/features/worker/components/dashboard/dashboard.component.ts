@@ -1,7 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { inject } from '@angular/core';
-import { CustomersListStore } from '../../../../shared/store/customers-list.store';
-import { WorkersListStore } from '../../../../shared/store/workers-list.store';
 import { IBooking } from '../../../../models/ibooking';
 import { DashbaordService } from './dashbaord.service';
 import { IBookingStatus } from '../../../../models/ibooking-status';
@@ -17,6 +15,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   bookings: IBooking[] = [];
   completedTaskCount = 0;
   bookingPieChartData: any[] = [];
+  isLoading = false;
 
   private _service = inject(DashbaordService);
   private subscription: Subscription = new Subscription();
@@ -30,6 +29,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchData(): void {
+    this.isLoading = true;
     this.subscription.add(
       this._service.getAllBookings().subscribe({
         next: (res: IApiResponse<IBooking>) => {
@@ -43,8 +43,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error fetching bookings:', error);
-          // Handle error appropriately (e.g., show user-friendly message)
+          this.isLoading = false
         },
+        complete:()=> this.isLoading = false
       })
     );
   }

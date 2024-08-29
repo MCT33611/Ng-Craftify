@@ -53,6 +53,7 @@ import { LoadingDotsComponent } from '../../shared/components/loading-dots/loadi
     ServiceCardTwoComponent,
     IonicModule,
     NgxChartsModule,
+    LoadingDotsComponent,
     LoadingDotsComponent
   ]
 })

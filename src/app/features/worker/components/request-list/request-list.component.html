@@ -9,7 +9,7 @@
             <div class="p-6">
                 <div class="flex flex-wrap justify-between items-center mb-4">
                     <h3 class="text-xl font-semibold text-gray-800">{{ booking.customer?.firstName || 'Customer' }}</h3>
-                    <span class="text-sm text-gray-500">{{ booking.date | date:'medium' }}</span>
+                    <span class="text-sm text-gray-500">{{ booking.date | date:'short' }}</span>
                 </div>
                 <div class="gap-4 text-sm flex flex-col items-start">
                     <p><span class="font-medium text-gray-600">Location:</span> {{ booking.locationName }}</p>
