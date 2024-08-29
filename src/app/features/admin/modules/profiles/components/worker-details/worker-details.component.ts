@@ -69,8 +69,6 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
   }
 
   downloadFile(url: string, fileName: string): void {
-    console.log(this.dataSource);
-
     this.http.get(url, { responseType: 'blob' }).subscribe(blob => {
       const downloadURL = window.URL.createObjectURL(blob);
       const link = document.createElement('a');

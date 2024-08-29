@@ -48,7 +48,6 @@ export class RequestListComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result) => {
-        console.log(result);
         if (result) {
           this.completeBooking(booking);
         }
@@ -80,7 +79,6 @@ export class RequestListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data: IApiResponse<IBooking>) => {
-          console.log(data);
           this.bookings = data.$values;
         },
         error: (error) => {
@@ -95,7 +93,6 @@ export class RequestListComponent implements OnInit, OnDestroy {
   }
 
   acceptBooking(booking: IBooking): void {
-    console.log('Accepting booking:', booking);
     booking.status = IBookingStatus.Accepted;
     this.workerService
       .rescheduleBooking(booking)
@@ -112,7 +109,6 @@ export class RequestListComponent implements OnInit, OnDestroy {
   }
 
   rejectBooking(booking: IBooking): void {
-    console.log('Rejecting booking:', booking);
     booking.status = IBookingStatus.Rejected;
     this.workerService
       .rescheduleBooking(booking)

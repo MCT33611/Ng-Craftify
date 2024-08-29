@@ -85,7 +85,6 @@ export class ServiceListComponent implements OnInit, OnDestroy {
 
           this.workers = workers.filter((w) => w.approved);
           this.applyFilters();
-          console.log(this.workers);
         },
         error: (err: HttpErrorResponse) => {
           console.error('Error loading workers:', err);
@@ -133,6 +132,5 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   }
 
   loadMore() {
-    console.log('Loading more services...');
   }
 }

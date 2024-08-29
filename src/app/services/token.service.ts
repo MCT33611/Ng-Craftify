@@ -151,7 +151,7 @@ export class TokenService {
     const email = this.getUserEmail();
 
     if (!refreshToken || !email) {
-      console.log("No refresh token or email available");
+      console.error("No refresh token or email available");
       return throwError(() => new Error('No refresh token or email available'));
     }
 

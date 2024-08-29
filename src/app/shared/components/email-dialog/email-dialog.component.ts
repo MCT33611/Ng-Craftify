@@ -111,7 +111,6 @@ export class EmailDialogComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          console.log('Email sent successfully', response);
           this.dialogRef.close(true);
         },
         error: (error) => {

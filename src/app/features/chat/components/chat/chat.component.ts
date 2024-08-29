@@ -109,7 +109,6 @@ export class ChatComponent implements OnInit, OnDestroy {
 
       this.chat.sendMessage(msg, files).catch((error) => {
         this.alert.error('Failed to send message: ' + error);
-        console.log(error);
       });
     }
   }

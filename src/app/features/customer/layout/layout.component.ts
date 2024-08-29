@@ -30,16 +30,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.notificationService.getUnreadNotifications().subscribe({
         next: (res) => {
-          console.log(res);
           res.$values.forEach((note) => {
             this._alertService.notification(note);
-            console.log(note.id);
             this.subscriptions.add(
               this.notificationService.markAsRead(note.id).subscribe({
-                error: (error) => console.log(error),
+                error: (error) => console.error(error),
               })
             );
-            console.log('marked1');
           });
         },
       })
@@ -53,7 +50,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
             console.log(note.id);
             this.subscriptions.add(
               this.notificationService.markAsRead(note.id).subscribe({
-                error: (error) => console.log(error),
+                error: (error) => console.error(error),
               })
             );
             console.log('marked2');

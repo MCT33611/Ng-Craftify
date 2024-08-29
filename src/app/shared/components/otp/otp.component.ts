@@ -111,8 +111,6 @@ export class OtpComponent implements OnInit, OnDestroy {
         error: (error: HttpErrorResponse) => {
           this.otpVerified.emit(false);
           this._alert.error(`${error.status}: ${error.error.title}`)
-          console.log(error);
-
         }
       });
     }

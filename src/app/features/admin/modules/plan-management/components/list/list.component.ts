@@ -45,13 +45,9 @@ export class ListComponent implements OnInit, OnDestroy {
             delete: `/admin/plan/delete/${data.id}`
           }));
         } else {
-          console.error('Unexpected response format:', res);
-          // Optionally, you can add error handling here
         }
       },
       error: (err: Error) => {
-        console.error('Error fetching plans:', err);
-        // Optionally, you can add error handling here
       }
     });
   }

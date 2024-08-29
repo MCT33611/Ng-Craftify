@@ -51,7 +51,6 @@ export class RazorpayService {
       
       if (userId) {
         orderId = await this.getOrderId(userId, PlanId);
-        console.log("orderId:", orderId);
       }
       
     } catch (error) {
@@ -78,7 +77,7 @@ export class RazorpayService {
           escape: false,
           ondismiss: () => {
             console.log('dismissed');
-            failed(); // Consider handling dismissal as failed payment
+            failed(); 
           }
         },
         handler: (response:{razorpay_payment_id : string}) => {
@@ -90,8 +89,6 @@ export class RazorpayService {
         }
       };
     }
-    console.log(razorpayOptions);
-    
     const rzp = new this._winRef.nativeWindow.Razorpay(razorpayOptions);
     rzp.open();
   }

@@ -227,8 +227,6 @@ export class RequestListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Review submitted:', result);
-        // Handle the submitted review (e.g., update UI, show success message)
       }
     });
   }

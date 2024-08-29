@@ -34,8 +34,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this._service.getAllBookings().subscribe({
         next: (res: IApiResponse<IBooking>) => {
           this.bookings = res.$values;
-          console.log(this.bookings);
-
           this.completedTaskCount = this.bookings.filter(
             (b) => b.status === IBookingStatus.Completed
           ).length;

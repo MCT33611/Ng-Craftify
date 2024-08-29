@@ -87,8 +87,6 @@ export class EditProfileComponent implements OnDestroy {
     };
     this.profile.update(user).subscribe({
       complete: () => {
-        console.log("checked:");
-        
         this.alert.success("Profile picture updated successfully");
         this.profileStore.loadAll();
       },

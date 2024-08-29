@@ -49,8 +49,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe({
       next: (res: ApiResponse<IUser>) => {
-        console.log(res);
-        
         if (res && res.$values && Array.isArray(res.$values)) {
           this.data = res.$values.map((ele: IUser): UserWithActions => ({
             ...ele,

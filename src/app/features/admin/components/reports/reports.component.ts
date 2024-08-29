@@ -103,7 +103,6 @@ export class ReportsComponent implements OnInit, OnDestroy {
       this.reportService
         .getAllCustomers()
         .subscribe((users: IApiResponse<IUser>) => {
-          console.log(users);
           this.users = users.$values;
           this.generateUserGrowthData();
         })
@@ -115,8 +114,6 @@ export class ReportsComponent implements OnInit, OnDestroy {
       (a, b) =>
         new Date(a.joinDate!).getTime() - new Date(b.joinDate!).getTime()
     );
-    console.log(sortedUsers);
-
     const growthData: { [key: string]: number } = {};
     let cumulativeUsers = 0;
 
@@ -191,7 +188,6 @@ export class ReportsComponent implements OnInit, OnDestroy {
     this.users = filteredUsers;
     this.generateUserGrowthData();
 
-    console.log('Filtered data:', this.reportData);
   }
 
   downloadPDF(): void {

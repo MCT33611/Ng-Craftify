@@ -68,8 +68,6 @@ export class AuthService {
   forgetPassword(email: string): Observable<{passwordResetToken: string}> {
     return this._http.post<{passwordResetToken: string}>(`${environment.API_BASE_URL}/api/Authentication/forgotPassword/${email}`,null).pipe(
       tap((res: { passwordResetToken: string }) => {
-        console.log(res);
-        
         this._tokenService.setPasswordResetToken(res.passwordResetToken);
       }),
       catchError(error => {

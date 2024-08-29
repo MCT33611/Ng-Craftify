@@ -3,21 +3,6 @@ import { inject, Inject, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { throwError } from 'rxjs';
 
-// export function  handleError(error: HttpErrorResponse) {
-//     let errorMessage = 'An error occurred';
-//     if (error.error instanceof ErrorEvent) {
-//         // Client-side error
-//         errorMessage = `Error: ${error.error.message}`;
-//     } else {
-//         // Server-side error
-//         errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-//     }
-//     // You can customize error handling here, like displaying a toast message
-//     // or logging errors to the console.
-//     console.error(errorMessage);
-//     return throwError(errorMessage);
-// }
-
 export function handleError(error: HttpErrorResponse) {
   const router = inject(Router);
   const ngZone = inject(NgZone);

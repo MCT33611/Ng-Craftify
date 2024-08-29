@@ -65,11 +65,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
         .getUnreadNotifications()
         .subscribe({
           next: (res) => {
-            console.log(res);
             res.$values.forEach((note) => {
               this._alertService.notification(note);
               this.notificationService.markAsRead(note.id);
-              console.log('marked1');
             });
           },
         });
@@ -82,7 +80,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
             res.forEach((note) => {
               this._alertService.notification(note);
               this.notificationService.markAsRead(note.id);
-              console.log('marked2');
             });
           },
         });

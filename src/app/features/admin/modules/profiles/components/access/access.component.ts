@@ -27,7 +27,6 @@ export class AccessComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadUserAndConfirmAccess();
-    console.log("here:");
   }
   
   async loadUserAndConfirmAccess(): Promise<void> {

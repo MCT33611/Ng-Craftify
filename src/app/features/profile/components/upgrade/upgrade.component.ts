@@ -77,7 +77,6 @@ export class UpgradeComponent implements OnInit, OnDestroy {
             console.error('Unexpected response format:', res);
             this.plans = [];
           }
-          console.log('Plans:', this.plans);
         },
         error: (err) => {
           console.error('Error fetching plans:', err);
@@ -142,8 +141,6 @@ export class UpgradeComponent implements OnInit, OnDestroy {
       perHourPrice: +formValues.perHourPrice,
       skills: formValues.skills,
     };
-    console.log(subscription);
-
     this.subscriptions.add(
       this.profileService.Subscribe(subscription).subscribe({
         complete: () => {
@@ -154,7 +151,6 @@ export class UpgradeComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.alert.error(`${err.error}, ${err.status}`);
-          console.log(err);
         },
       })
     );
@@ -198,7 +194,6 @@ export class UpgradeComponent implements OnInit, OnDestroy {
               this.alert.success('Documents uploaded');
             },
             error: (err: HttpErrorResponse) => {
-              console.log(err);
               this.alert.error(`${err.error}: ${err.status}`);
             },
           })
