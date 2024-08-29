@@ -7,6 +7,7 @@ import { environment } from '../../../../../../environments/environment';
 import { IRoles } from '../../../../../core/constants/roles';
 import { handleError } from '../../../../../shared/utils/handleError';
 import { IWorker } from '../../../../../models/iworker';
+import { IApiResponse } from '../../../../../models/api-response.models';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,13 +27,13 @@ export class UserService {
     return this._http.get<IWorker>(`${environment.API_BASE_URL}/api/Profile/Worker/${workerId}`);
   }
 
-  getAllCustomers(): Observable<IUser[]> {
-    return this._http.get<IUser[]>(`${environment.API_BASE_URL}/api/Profile/Custormers`)
+  getAllCustomers(): Observable<IApiResponse<IUser>> {
+    return this._http.get<IApiResponse<IUser>>(`${environment.API_BASE_URL}/api/Profile/Custormers`)
     .pipe(catchError(handleError));
   }
   
-  getAllWorkers(): Observable<IWorker[]> {
-    return this._http.get<IWorker[]>(`${environment.API_BASE_URL}/api/Profile/Workers`)
+  getAllWorkers(): Observable<IApiResponse<IWorker>> {
+    return this._http.get<IApiResponse<IWorker>>(`${environment.API_BASE_URL}/api/Profile/Workers`)
     .pipe(catchError(handleError));
   }
 

@@ -4,6 +4,7 @@ import { Observable, catchError } from 'rxjs';
 import { environment } from '../../../../../../environments/environment';
 import { IPlan } from '../../../../../models/iplan';
 import { handleError } from '../../../../../shared/utils/handleError';
+import { IApiResponse } from '../../../../../models/api-response.models';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class PlanService {
 
 
     // GET /api/Plan
-    getAll(): Observable<IPlan[]> {
-      return this._http.get<IPlan[]>(`${environment.API_BASE_URL}/api/Plan`).pipe(catchError(handleError));
+    getAll(): Observable<IApiResponse<IPlan>> {
+      return this._http.get<IApiResponse<IPlan>>(`${environment.API_BASE_URL}/api/Plan`).pipe(catchError(handleError));
     }
   
     // GET /api/Plan/{id}

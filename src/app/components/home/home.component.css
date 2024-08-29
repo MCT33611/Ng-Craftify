@@ -1,5 +1,4 @@
-
-
+/* Base Styles */
 .glow {
   top: -10%;
   left: -10%;
@@ -112,5 +111,54 @@
 
   100% {
     transform: translate(10%, -10%) scale(1);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .glowing {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .glowing span {
+    margin: 0.5rem;
+  }
+
+  .text-5xl {
+    font-size: 2.5rem;
+  }
+
+  .p-12 {
+    padding: 6rem;
+  }
+
+  .max-w-2xl {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-5xl {
+    font-size: 1.875rem;
+  }
+
+  .p-12 {
+    padding: 4rem;
+  }
+
+  .bg-gray-100 {
+    padding: 1rem;
+  }
+
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  footer p,
+  footer a {
+    margin-bottom: 0.5rem;
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 
@@ -8,7 +8,7 @@ import { LoadingComponent } from '../shared/components/loading/loading.component
 })
 export class LoadingService {
   private loadingSubject = new Subject<boolean>();
-  private dialogRef: any;
+  private dialogRef!: MatDialogRef<LoadingComponent>;
 
   constructor(private dialog: MatDialog) {
     this.loadingSubject.subscribe((isLoading) => {

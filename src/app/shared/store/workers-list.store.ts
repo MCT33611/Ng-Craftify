@@ -24,7 +24,7 @@ export const WorkersListStore = signalStore(
 
             try {
                 // Fetch workers data asynchronously
-                const workers = await lastValueFrom(userService.getAllWorkers());
+                const workers = (await lastValueFrom(userService.getAllWorkers())).$values;
                 
                 // Update state with fetched workers data and set loading state to false
                 patchState(store, { workers, isLoading: false });

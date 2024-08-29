@@ -8,6 +8,7 @@ import { handleError } from '../../../shared/utils/handleError';
 import { IPlan } from '../../../models/iplan';
 import { ISubscription } from '../../../models/isubscription';
 import { uploadWorkerDocResponse } from '../../../models/workerDocUploadResponse';
+import { IApiResponse } from '../../../models/api-response.models';
 
 @Injectable({
   providedIn: 'root'
@@ -58,8 +59,8 @@ export class ProfileService {
     );
   }
 
-  getAllPlans(): Observable<IPlan[]> {
-    return this._http.get<IPlan[]>(`${environment.API_BASE_URL}/api/Plan`).pipe(
+  getAllPlans(): Observable<IApiResponse<IPlan>> {
+    return this._http.get<IApiResponse<IPlan>>(`${environment.API_BASE_URL}/api/Plan`).pipe(
       catchError(handleError)
     );
   }

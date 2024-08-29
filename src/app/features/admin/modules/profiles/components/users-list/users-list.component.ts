@@ -8,6 +8,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
 import { LoadingService } from '../../../../../../services/loading.service';
 
+interface UserWithActions extends IUser {
+  details: string;
+  accessChange: string;
+}
+
+interface ApiResponse<T> {
+  $values: T[];
+}
+
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
@@ -17,7 +26,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
   userService = inject(UserService);
   alertService = inject(AlertService);
 
-  data: IUser[] = [];
+  data: UserWithActions[] = [];
   columns: ColumnConfig[] = [
     { key: 'profilePicture', type: ColumnType.Image, header: 'Profile' },
     { key: 'firstName', type: ColumnType.Text, header: 'First Name' },
@@ -30,20 +39,20 @@ export class UsersListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private _loading:LoadingService
+    private _loading: LoadingService
   ) {
-    _loading.hide()
+    _loading.hide();
   }
 
   ngOnInit(): void {
     this.userService.getAllCustomers().pipe(
       takeUntil(this.destroy$)
     ).subscribe({
-      next: (res: any) => {
+      next: (res: ApiResponse<IUser>) => {
         console.log(res);
         
         if (res && res.$values && Array.isArray(res.$values)) {
-          this.data = res.$values.map((ele: IUser) => ({
+          this.data = res.$values.map((ele: IUser): UserWithActions => ({
             ...ele,
             details: `../details/${ele.id}`,
             accessChange: `../access/${ele.id}`

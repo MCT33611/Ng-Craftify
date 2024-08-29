@@ -1,37 +1,42 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Component, Inject, OnInit, OnDestroy, Optional } from '@angular/core';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EmailService } from '../../../services/email.service';
 import { MaterialModule } from '../../material/material.module';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoadingService } from '../../../services/loading.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 @Component({
   selector: 'app-email-dialog',
   standalone: true,
-  imports: [
-    CommonModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    FormsModule
-  ],
+  imports: [CommonModule, MaterialModule, ReactiveFormsModule, FormsModule],
   templateUrl: './email-dialog.component.html',
-  styleUrl: './email-dialog.component.css'
+  styleUrl: './email-dialog.component.css',
 })
-export class EmailDialogComponent implements OnInit {
+export class EmailDialogComponent implements OnInit, OnDestroy {
   emailForm!: FormGroup;
   selectedTemplate: string = 'text';
   templates = ['text', 'warning', 'info', 'custom'];
   previewHtml: string = '';
+  private destroy$ = new Subject<void>();
 
   constructor(
     @Optional() private dialogRef: MatDialogRef<EmailDialogComponent>,
     private fb: FormBuilder,
     private emailService: EmailService,
     @Inject(MAT_DIALOG_DATA) public data: { email: string },
-    private _loading : LoadingService
-  ) { 
-    _loading.hide()
+    private _loading: LoadingService
+  ) {
+    _loading.hide();
   }
 
   ngOnInit() {
@@ -39,13 +44,19 @@ export class EmailDialogComponent implements OnInit {
       to: [this.data.email, [Validators.required, Validators.email]],
       subject: ['', Validators.required],
       content: ['', Validators.required],
-      customHtml: ['']
+      customHtml: [''],
     });
     this.emailForm.get('to')?.disable();
 
-    this.emailForm.valueChanges.subscribe(() => this.updatePreview());
+    this.emailForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updatePreview());
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   updatePreview() {
     const { subject, content } = this.emailForm.value;
@@ -87,7 +98,7 @@ export class EmailDialogComponent implements OnInit {
             ${this.emailForm.get('customHtml')!.value}
           </body>
         </html>
-        `
+        `;
         break;
     }
   }
@@ -95,20 +106,24 @@ export class EmailDialogComponent implements OnInit {
   onSubmit() {
     this._loading.show();
     const { to, subject } = this.emailForm.value;
-    this.emailService.sendEmail(this.data.email, subject, this.previewHtml).subscribe({
-      next: response => {
-        console.log('Email sent successfully', response);
-        this.dialogRef.close(true);
-      },
-      error: error => {
-        console.error('Error sending email', error);
-      }
-    }
-    );
+    this.emailService
+      .sendEmail(this.data.email, subject, this.previewHtml)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          console.log('Email sent successfully', response);
+          this.dialogRef.close(true);
+        },
+        error: (error) => {
+          console.error('Error sending email', error);
+        },
+        complete: () => {
+          this._loading.hide();
+        },
+      });
   }
 
   closeDialog(): void {
     this.dialogRef.close(false);
-
   }
 }

@@ -24,7 +24,7 @@ export const CustomersListStore = signalStore(
 
             try {
                 // Fetch users data asynchronously
-                const users = await lastValueFrom(userService.getAllCustomers());
+                const users = (await lastValueFrom(userService.getAllCustomers())).$values;
                 
                 // Update state with fetched users data and set loading state to false
                 patchState(store, { users, isLoading: false });

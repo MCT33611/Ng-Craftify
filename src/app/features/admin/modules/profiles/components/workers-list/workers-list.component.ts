@@ -7,15 +7,27 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
 import { LoadingService } from '../../../../../../services/loading.service';
 
+interface WorkerResponse {
+  $values: IWorker[];
+}
+
+interface WorkerListType extends IWorker {
+  details: string;
+  approvalChange: string;
+  accessChange: string;
+}
+
 @Component({
   selector: 'app-workers-list',
   templateUrl: './workers-list.component.html',
   styleUrl: './workers-list.component.css'
 })
 export class WorkersListComponent implements OnInit, OnDestroy {
-  userService = inject(UserService);
-  alertService = inject(AlertService);
-  data: IWorker[] = [];
+  private userService = inject(UserService);
+  private alertService = inject(AlertService);
+  private loadingService = inject(LoadingService);
+
+  data: WorkerListType[] = [];
   columns: ColumnConfig[] = [
     { key: 'profilePicture', type: ColumnType.Image, header: 'Profile' },
     { key: 'email', type: ColumnType.Text, header: 'Email' },
@@ -27,24 +39,27 @@ export class WorkersListComponent implements OnInit, OnDestroy {
   ];
 
   private destroy$ = new Subject<void>();
-  constructor(
-    private _loading:LoadingService
-  ) {
-    _loading.hide()
+
+  constructor() {
+    this.loadingService.hide();
   }
+
   ngOnInit(): void {
+    this.fetchWorkers();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private fetchWorkers(): void {
     this.userService.getAllWorkers().pipe(
       takeUntil(this.destroy$)
     ).subscribe({
-      next: (res: any) => {
+      next: (res: WorkerResponse) => {
         if (res && Array.isArray(res.$values)) {
-          this.data = res.$values.map((ele: IWorker) => ({
-            ...ele,
-            ...ele.user,
-            details: `../worker-details/${ele.id}`,
-            approvalChange: `../approval/${ele.userId}`,
-            accessChange: `../access/${ele.userId}`
-          }));
+          this.data = res.$values.map((ele: IWorker) => this.mapWorkerData(ele));
         } else {
           this.alertService.error('Unexpected response format');
         }
@@ -55,8 +70,13 @@ export class WorkersListComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  private mapWorkerData(worker: IWorker): WorkerListType {
+    return {
+      ...worker,
+      ...worker.user,
+      details: `../worker-details/${worker.id}`,
+      approvalChange: `../approval/${worker.userId}`,
+      accessChange: `../access/${worker.userId}`
+    };
   }
 }

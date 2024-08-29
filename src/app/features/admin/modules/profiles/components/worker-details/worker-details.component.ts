@@ -2,11 +2,13 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../../../../../services/alert.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { IUser } from '../../../../../../models/iuser';
 import { IWorker } from '../../../../../../models/iworker';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
+
+interface WorkerDetails extends Omit<IWorker, 'user'>, IUser { }
 
 @Component({
   selector: 'app-worker-details',
@@ -17,12 +19,14 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
   userService = inject(UserService);
   route = inject(ActivatedRoute);
   alert = inject(AlertService);
-  workerId!: string | null;
-  dataSource!: IWorker;
+  http = inject(HttpClient);
+
+  workerId: string | null = null;
+  dataSource: WorkerDetails | null = null;
 
   private destroy$ = new Subject<void>();
 
-  labels: string[] = [
+  labels: Array<keyof WorkerDetails> = [
     "firstName",
     "lastName",
     "email",
@@ -50,8 +54,6 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
               ...res,
               ...res.user,
             };
-            // Remove the user property to avoid duplication
-            delete this.dataSource.user;
           },
           error: (error: HttpErrorResponse) => this.alert.error(`Error: ${error.status} - ${error.statusText}`)
         });
@@ -64,5 +66,22 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  downloadFile(url: string, fileName: string): void {
+    console.log(this.dataSource);
+
+    this.http.get(url, { responseType: 'blob' }).subscribe(blob => {
+      const downloadURL = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadURL;
+      link.download = `${fileName}-${this.getFileNameFromUrl(url)}`;
+      link.click();
+      window.URL.revokeObjectURL(downloadURL);
+    });
+  }
+
+  private getFileNameFromUrl(url: string): string {
+    return url.split('/').pop() || 'download.pdf';
   }
 }

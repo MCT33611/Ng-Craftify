@@ -7,6 +7,7 @@ import { ReportResponseDictionary } from '../../../models/report-response-dictio
 import { IUser } from '../../../models/iuser';
 import { IWorker } from '../../../models/iworker';
 import { handleError } from '../../../shared/utils/handleError';
+import { IApiResponse } from '../../../models/api-response.models';
 
 @Injectable({
   providedIn: 'root'
@@ -85,8 +86,8 @@ export class ReportService {
     return this.http.get(`${environment.API_BASE_URL}/api/Booking`).pipe(catchError(handleError));
   }
 
-  getAllCustomers(): Observable<IUser[]> {
-    return this.http.get<IUser[]>(`${environment.API_BASE_URL}/api/Profile/Custormers`)
+  getAllCustomers(): Observable<IApiResponse<IUser>> {
+    return this.http.get<IApiResponse<IUser>>(`${environment.API_BASE_URL}/api/Profile/Custormers`)
     .pipe(catchError(handleError));
   }
   

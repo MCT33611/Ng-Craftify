@@ -1,89 +1,97 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ProfileStore } from '../../../shared/store/profile.store';
 import { TokenService } from '../../../services/token.service';
 import { NotificationService } from '../../../services/notification.service';
 import { AlertService } from '../../../services/alert.service';
 import { LoadingService } from '../../../services/loading.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
+  styleUrl: './layout.component.css',
 })
-export class LayoutComponent {
-  profileStore = inject(ProfileStore)
+export class LayoutComponent implements OnInit, OnDestroy {
+  profileStore = inject(ProfileStore);
   token = inject(TokenService);
-  tokenService = inject(TokenService)
+  tokenService = inject(TokenService);
   notificationService = inject(NotificationService);
   private _alertService = inject(AlertService);
+
+  private subscriptions: Subscription[] = [];
+
   menuItems = [
     {
-      title: "Dashboard",
+      title: 'Dashboard',
       route: 'dashboard',
-      iconSrc: 'assets/icons/dashboard.svg'
+      iconSrc: 'assets/icons/dashboard.svg',
     },
     {
-      title: "Edit Images & Details ",
+      title: 'Edit Images & Details ',
       route: 'images',
-      iconSrc: 'assets/icons/images.svg'
+      iconSrc: 'assets/icons/images.svg',
     },
     {
-      title: "Bookings Management",
+      title: 'Bookings Management',
       route: 'requests',
-      iconSrc: 'assets/icons/service.svg'
+      iconSrc: 'assets/icons/service.svg',
     },
     {
-      title: "Messages",
+      title: 'Messages',
       route: 'chat',
-      iconSrc: 'assets/icons/message.svg'
+      iconSrc: 'assets/icons/message.svg',
     },
     {
-      title: "Reviews and Ratings",
+      title: 'Reviews and Ratings',
       route: `reviews/${this.tokenService.getWorkerId()}`,
-      iconSrc: 'assets/icons/review.svg'
+      iconSrc: 'assets/icons/review.svg',
     },
     {
-      title: "Settings",
+      title: 'Settings',
       route: 'settings',
-      iconSrc: 'assets/icons/settings.svg'
-    }
+      iconSrc: 'assets/icons/settings.svg',
+    },
   ];
 
-  constructor(
-    _loading: LoadingService
-  ) {
-    _loading.hide()
+  constructor(private _loading: LoadingService) {
+    _loading.hide();
   }
 
   ngOnInit(): void {
     this.profileStore.loadAll();
-    setTimeout(() => this.notificationService.joinUserGroup(), 3000)
+    setTimeout(() => this.notificationService.joinUserGroup(), 3000);
     setTimeout(() => {
-      this.notificationService.getUnreadNotifications().subscribe({
-        next: (res) => {
-          console.log(res);
-          res.$values.forEach(note => {
-            this._alertService.notification(note);
-            this.notificationService.markAsRead(note.id)
-            console.log("marked1");
+      const unreadSub = this.notificationService
+        .getUnreadNotifications()
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            res.$values.forEach((note) => {
+              this._alertService.notification(note);
+              this.notificationService.markAsRead(note.id);
+              console.log('marked1');
+            });
+          },
+        });
+      this.subscriptions.push(unreadSub);
 
-          })
-        }
-      })
-      this.notificationService.getNotifications().subscribe({
-        next: (res) => {
-          res.forEach(note => {
-            this._alertService.notification(note);
-            this.notificationService.markAsRead(note.id)
-            console.log("marked2");
-
-          })
-        }
-      });
-
-    }, 4000)
+      const notificationsSub = this.notificationService
+        .getNotifications()
+        .subscribe({
+          next: (res) => {
+            res.forEach((note) => {
+              this._alertService.notification(note);
+              this.notificationService.markAsRead(note.id);
+              console.log('marked2');
+            });
+          },
+        });
+      this.subscriptions.push(notificationsSub);
+    }, 4000);
   }
+
   ngOnDestroy(): void {
-    this.notificationService.leave()
+    this.notificationService.leave();
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 }

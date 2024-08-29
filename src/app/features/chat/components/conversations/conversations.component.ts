@@ -1,10 +1,19 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { Conversation, User } from '../../../../models/conversation.model';
 import { ChatService } from '../../services/chat.service';
-import { catchError, map } from 'rxjs/operators';
-import { forkJoin, of } from 'rxjs';
-import { IUser } from '../../../../models/iuser';
+import { catchError, map, takeUntil } from 'rxjs/operators';
+import { forkJoin, of, Subject } from 'rxjs';
 import { ProfileStore } from '../../../../shared/store/profile.store';
+import { AlertService } from '../../../../services/alert.service';
 
 interface List {
   id: string;
@@ -19,65 +28,68 @@ interface List {
 @Component({
   selector: 'app-conversations',
   templateUrl: './conversations.component.html',
-  styleUrl: './conversations.component.css'
+  styleUrl: './conversations.component.css',
 })
-export class ConversationsComponent implements OnChanges {
+export class ConversationsComponent implements OnChanges, OnDestroy {
   @Output() onSelect = new EventEmitter<Conversation>();
-  @Input({ required: true }) convesations: Conversation[] = [];
+  @Input({ required: true }) conversations: Conversation[] = [];
   @Input({ required: true }) currentUserId!: string;
 
   list: List[] = [];
-  chat = inject(ChatService);
+  private chat = inject(ChatService);
   profileStore = inject(ProfileStore);
-
+  private alert = inject(AlertService);
   convLoading = false;
-
+  private destroy$ = new Subject<void>();
 
   constructor() {
     this.profileStore.loadAll();
   }
 
   ngOnChanges(): void {
-    this.convLoading = true
+    this.convLoading = true;
     this.updateList();
   }
 
   updateList() {
-
-    const observables = this.convesations.map(conv => {
+    const observables = this.conversations.map((conv) => {
       const otherUser = this.otherUser(conv);
 
       return this.chat.getUnreadMessagesCount(conv.id).pipe(
-        catchError(error => {
+        catchError((error) => {
+          console.error('Error getting unread message count:', error);
           return of(0);
-        })
-      ).pipe(
-        map((unReadCount: number) => {
-          return {
-            id: conv.id,
-            title: otherUser?.firstName ?? 'Unknown',
-            pictureUrl: otherUser?.profilePicture ?? 'assets/images/moutain-sun-preview.jpg',
-            unReadCount,
-            msgPreview: 'latest message',
-            isBlocked: conv.isBlocked,
-            isRead: unReadCount == 0
-          };
-        })
+        }),
+        map((unReadCount: number) => ({
+          id: conv.id,
+          title: otherUser?.firstName ?? 'Unknown',
+          pictureUrl:
+            otherUser?.profilePicture ??
+            'assets/images/moutain-sun-preview.jpg',
+          unReadCount,
+          msgPreview: 'latest message',
+          isBlocked: conv.isBlocked,
+          isRead: unReadCount == 0,
+        }))
       );
     });
 
-    forkJoin(observables).subscribe({
-      next: (results: List[]) => {
-        this.list = results;
-        
-      },
-      error: (error) => console.error('Error updating list:', error),
-      complete:() => this.convLoading = false
-    });
+    forkJoin(observables)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (results: List[]) => {
+          this.list = results;
+        },
+        error: (error) => {
+          console.error('Error updating list:', error);
+          this.alert.error('Failed to update conversation list');
+        },
+        complete: () => (this.convLoading = false),
+      });
   }
 
   onConvSelect(convId: string) {
-    let conv = this.convesations.find(ele => ele.id == convId);
+    let conv = this.conversations.find(ele => ele.id == convId);
     if (conv) {
       this.onSelect.emit(conv);
       this.chat.markConversationAsRead(conv.id)
@@ -93,11 +105,11 @@ export class ConversationsComponent implements OnChanges {
       return null;
     }
 
-    if (conv.peerOneId === this.currentUserId)
-      return conv.peerTwo;
-    else if (conv.peerTwoId === this.currentUserId)
-      return conv.peerOne;
+    return conv.peerOneId === this.currentUserId ? conv.peerTwo : conv.peerOne;
+  }
 
-    return null;
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

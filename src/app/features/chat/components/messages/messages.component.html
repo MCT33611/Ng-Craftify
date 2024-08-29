@@ -1,7 +1,7 @@
 
 
 
-<div class="messages-list">
+<div class="messages-list ">
     @for(message of messages;track $index){
         <!-- *ngFor="let message of messages; let $index = index" -->
         <div class="message-item"  (dblclick)="startEditing(message)"
@@ -12,7 +12,7 @@
                 </ng-container>
                 <ng-container *ngIf="!message.isDeleted">
                     <ng-container *ngFor="let media of message.media; let mediaIndex = index">
-                        <ng-container [ngSwitch]="DetermineMediaType(media.contentType)">
+                        <ng-container [ngSwitch]="determineMediaType(media.contentType)">
                             <ng-container *ngSwitchCase="MediaType.Image">
                                 <img [src]="media.cdnUrl" alt="" (click)="openMediaViewer(media)">
                             </ng-container>

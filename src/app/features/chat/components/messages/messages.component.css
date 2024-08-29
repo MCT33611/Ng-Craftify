@@ -4,6 +4,19 @@
     flex-direction: column;
 }
 
+@media (max-width : 768px) {
+    .messages-list{
+        overflow-y: auto;
+        height: 50vh;
+    }
+}
+@media (max-width : 425px) {
+    .messages-list{
+        overflow-y: auto;
+        height: 70vh;
+    }
+}
+
 .message-item {
     max-width: 70%;
     margin-bottom: 15px;

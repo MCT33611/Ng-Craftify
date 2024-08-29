@@ -3,6 +3,12 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
+interface EmailResponse {
+  success: boolean;
+  message?: string;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,10 +17,8 @@ export class EmailService {
 
   constructor(private http: HttpClient) { }
 
-  sendEmail(to: string, subject: string, htmlMessage: string): Observable<any> {
+  sendEmail(to: string, subject: string, htmlMessage: string): Observable<EmailResponse> {
     const data = { to, subject, htmlMessage }
-    console.log(data);
-    
-    return this.http.post(`${this.apiUrl}/send`, data);
+    return this.http.post<EmailResponse>(`${this.apiUrl}/send`, data);
   }
 }

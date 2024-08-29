@@ -1,31 +1,35 @@
 <body>
   <div class="glowing">
-    <span style="--i:1;"></span>
-    <span style="--i:2;"></span>
-    <span style="--i:3;"></span>
+    <span style="--i: 1"></span>
+    <span style="--i: 2"></span>
+    <span style="--i: 3"></span>
   </div>
 
   <div class="glowing">
-    <span style="--i:1;"></span>
-    <span style="--i:2;"></span>
-    <span style="--i:3;"></span>
+    <span style="--i: 1"></span>
+    <span style="--i: 2"></span>
+    <span style="--i: 3"></span>
   </div>
 
   <div class="glowing">
-    <span style="--i:1;"></span>
-    <span style="--i:2;"></span>
-    <span style="--i:3;"></span>
+    <span style="--i: 1"></span>
+    <span style="--i: 2"></span>
+    <span style="--i: 3"></span>
   </div>
 
   <div class="glowing">
-    <span style="--i:1;"></span>
-    <span style="--i:2;"></span>
-    <span style="--i:3;"></span>
+    <span style="--i: 1"></span>
+    <span style="--i: 2"></span>
+    <span style="--i: 3"></span>
   </div>
 
   <section id="home">
-    <div class="w-full h-screen flex flex-col justify-center items-center gap-2">
-      <div class="flex flex-col justify-center items-center text-center font-bold w-full">
+    <div
+      class="w-full h-min-[100vh] md:h-screen flex flex-col justify-center items-center gap-2 overflow-x-hidden"
+    >
+      <div
+        class="flex flex-col justify-center items-center text-center font-bold w-full"
+      >
         <h1 class="text-5xl">Books Trusted</h1>
         <h1 class="text-5xl">Help For Home Tasks</h1>
         <h1 class="text-5xl text-green-900">Life of Joy</h1>
@@ -34,11 +38,19 @@
         <div class="relative p-12 w-full sm:max-w-2xl sm:mx-auto">
           <div class="overflow-hidden z-0 rounded-full relative p-3">
             <form role="form" class="relative flex z-50 bg-white rounded-full">
-              <input [(ngModel)]="searchTerm" [ngModelOptions]="{standalone: true}" type="text"
+              <input
+                [(ngModel)]="searchTerm"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
                 placeholder="enter your search here"
-                class="rounded-full flex-1 px-6 py-4 text-gray-700 focus:outline-none">
-              <button (click)="onSearch()"
-                class="bg-indigo-500 text-white rounded-full font-semibold px-8 py-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none">Search</button>
+                class="rounded-full flex-1 px-6 py-4 text-gray-700 focus:outline-none"
+              />
+              <button
+                (click)="onSearch()"
+                class="bg-indigo-500 text-white rounded-full font-semibold px-8 py-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none"
+              >
+                Search
+              </button>
             </form>
             <div class="glow glow-1 z-10 bg-pink-400 absolute"></div>
             <div class="glow glow-2 z-20 bg-purple-400 absolute"></div>
@@ -47,15 +59,22 @@
           </div>
         </div>
       </div>
-      {{searchTerm}}
+      {{ searchTerm }}
     </div>
   </section>
   <!-- Footer -->
   <footer class="bg-white border-t border-gray-200">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-      <p class="text-sm text-gray-500">&copy; 2024 Craftify Marketplace. All rights reserved.</p>
-      <a href="mailto:craftify.onion0.122@gmail.com"  class="text-sm text-blue-500 hover:underline">Contact Us</a>
+    <div
+      class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center"
+    >
+      <p class="text-sm text-gray-500">
+        &copy; 2024 Craftify Marketplace. All rights reserved.
+      </p>
+      <a
+        href="mailto:craftify.onion0.122@gmail.com"
+        class="text-sm text-blue-500 hover:underline"
+        >Contact Us</a
+      >
     </div>
   </footer>
-
 </body>

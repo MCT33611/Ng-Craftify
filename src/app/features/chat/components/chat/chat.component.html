@@ -1,9 +1,12 @@
 <div class="chat-container">
-    <div class="sidebar">
-        <app-conversations (onSelect)="onSelect($event)" [convesations]="convs" [currentUserId]="userId">
+    <div 
+    class="sidebar w-full flex justify-center md:justify-start md:w-[30%]"
+    [ngClass]="{'hidden md:flex lg:flex':selectedConv}"
+    >
+        <app-conversations (onSelect)="onSelect($event)" [conversations]="convs" [currentUserId]="userId">
         </app-conversations>
     </div>
-    <div class="main-content">
+    <div class="main-content hidden md:block lg:block">
         @if(selectedConv){
         <div class="header-container">
             <app-chat-header [otherUser]="otherUser(selectedConv)!"></app-chat-header>
@@ -20,7 +23,7 @@
         </div>
         }
         @else{
-        <app-emty></app-emty>
+        <app-emty class="hidden md:block lg:block"></app-emty>
         }
     </div>
 </div>

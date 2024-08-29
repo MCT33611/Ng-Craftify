@@ -1,38 +1,31 @@
 <div class="w-full flex justify-between items-start gap-8 p-6 bg-gray-100">
-    <div class="w-1/3">
-      <app-ui-upsert-form 
-        [isDetails]="true" 
-        [title]="'Worker Details'" 
-        [description]="''" 
-        [labels]="labels"
-        [data]="dataSource"
-        class="bg-white shadow-md rounded-lg p-6"
-      ></app-ui-upsert-form>
-    </div>
-    
-    <div class="w-1/3 flex flex-col gap-6">
-      @if(dataSource['certificationUrl']){
-        <div class="bg-white shadow-md rounded-lg p-4">
-          <h3 class="text-lg font-semibold mb-2">Certification</h3>
-          <pdf-viewer 
-            [src]="dataSource['certificationUrl']" 
-            [render-text]="true" 
-            [original-size]="false"
-            class="w-full h-[400px]"
-          ></pdf-viewer>
-        </div>
-      }
-      
-      <div class="bg-white shadow-md rounded-lg p-4">
-        <h3 class="text-lg font-semibold mb-2">Preview Images</h3>
-        <app-image-slider 
-          [images]="[
-            { url: dataSource.smallPreviewImageUrl ?? 'https://img.freepik.com/premium-photo/male-hand-touching-service-concept_220873-7591.jpg', alt: 'Small Preview' },
-            { url: dataSource.mediumPreviewImageUrl ?? 'https://img.freepik.com/premium-photo/male-hand-touching-service-concept_220873-7591.jpg', alt: 'Medium Preview' },
-            { url: dataSource.largePreviewImageUrl ?? 'https://img.freepik.com/premium-photo/male-hand-touching-service-concept_220873-7591.jpg', alt: 'Large Preview' }
-          ]"
-          class="w-full h-[300px]"
-        ></app-image-slider>
+  <div class="w-1/3">
+    <app-ui-upsert-form [isDetails]="true" [title]="'Worker Details'" [description]="''" [labels]="labels"
+      [data]="dataSource" class="bg-white shadow-md rounded-lg p-6"></app-ui-upsert-form>
+  </div>
+
+  <div class="w-1/3 flex flex-col gap-6">
+    @if(dataSource?.certificationUrl){
+    <div class="bg-white shadow-md rounded-lg p-4">
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="text-lg font-semibold">Certification</h3>
+        <button (click)="downloadFile(dataSource?.certificationUrl!, dataSource?.firstName!)"
+          class="text-white bg-blue-500 hover:bg-blue-700 rounded-md px-3 py-1 text-sm">
+          Download
+        </button>
       </div>
+      <pdf-viewer [src]="dataSource?.certificationUrl" [render-text]="true" [original-size]="false"
+        class="w-full h-[400px]"></pdf-viewer>
+    </div>
+    }
+
+    <div class="bg-white shadow-md rounded-lg p-4">
+      <h3 class="text-lg font-semibold mb-2">Preview Images</h3>
+      <app-image-slider [images]="[
+            { url: dataSource?.smallPreviewImageUrl ?? 'https://img.freepik.com/premium-photo/male-hand-touching-service-concept_220873-7591.jpg', alt: 'Small Preview' },
+            { url: dataSource?.mediumPreviewImageUrl ?? 'https://img.freepik.com/premium-photo/male-hand-touching-service-concept_220873-7591.jpg', alt: 'Medium Preview' },
+            { url: dataSource?.largePreviewImageUrl ?? 'https://img.freepik.com/premium-photo/male-hand-touching-service-concept_220873-7591.jpg', alt: 'Large Preview' }
+          ]" class="w-full h-[300px]"></app-image-slider>
     </div>
   </div>
+</div>

@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { ReviewDialogComponent } from '../review-dialog/review-dialog.component';
+import { IApiResponse } from '../../../../models/api-response.models';
 
 interface Location {
   lat: number;
@@ -60,7 +61,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
     this.customerService.getAllRequest().pipe(
       takeUntil(this.destroy$)
     ).subscribe({
-      next: (response: any) => {
+      next: (response: IApiResponse<IBooking>) => {
         if (response && Array.isArray(response.$values)) {
           this.bookings = response.$values;
         } else if (Array.isArray(response)) {
@@ -214,7 +215,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  openReviewDialog(booking: any) {
+  openReviewDialog(booking: IBooking) {
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
       width: '500px',
       data: {

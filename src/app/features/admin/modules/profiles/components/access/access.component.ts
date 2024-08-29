@@ -16,6 +16,7 @@ export class AccessComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private userId!: string;
   user?: IUser;
+
   constructor(
     private _userService: UserService,
     private _route: ActivatedRoute,
@@ -27,10 +28,9 @@ export class AccessComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadUserAndConfirmAccess();
     console.log("here:");
-    
   }
   
-  async loadUserAndConfirmAccess() {
+  async loadUserAndConfirmAccess(): Promise<void> {
     this._route.paramMap.pipe(
       takeUntil(this.destroy$)
     ).subscribe(async params => {
@@ -38,9 +38,11 @@ export class AccessComponent implements OnInit, OnDestroy {
       if (this.userId) {
         try {
           this.user = await firstValueFrom(this._userService.get(this.userId));
-        } catch (err:any) {
-          this._alertService.error(err.message);
-          this._router.navigate(['../'])
+        } catch (err: unknown) {
+          const error = err as Error;
+          this._alertService.error(error.message);
+          this._router.navigate(['../']);
+          return;
         }
         if (this.user && this.user.email) {
           const confirmation = await this._alertService.confirm("user access change", "Are you sure you want to change access of this user?");
@@ -57,46 +59,41 @@ export class AccessComponent implements OnInit, OnDestroy {
     });
   }
   
-  openEmailDialog(email: string) {
+  openEmailDialog(email: string): void {
     const dialogRef = this.dialog.open(EmailDialogComponent, {
       width: '600px',
       data: { email: email }
     });
   
     dialogRef.afterClosed().subscribe({
-      next: result => {
+      next: (result: boolean) => {
         if (result) {
           this._alertService.success('Email sent successfully');
           if (this.userId) {
             this.accessChange(this.userId);
-            setTimeout(()=>this._router.navigate(['/admin/profiles']),3000)
+            setTimeout(() => this._router.navigate(['/admin/profiles']), 3000);
           }
         } else {
           this._alertService.error('Email sending cancelled');
-          setTimeout(()=>this._router.navigate(['/admin/profiles']),3000)
+          setTimeout(() => this._router.navigate(['/admin/profiles']), 3000);
         }
       }
     });
   }
-  accessChange(userId: string | null) {
-    if (userId) {
-      this._userService.AccessChange(userId).pipe(
-        takeUntil(this.destroy$)
-      ).subscribe({
-        complete: () => {
-          this._alertService.success("user access changed successfully");
-          this._router.navigate(['/admin/profiles']);
-        },
-        error: (err) => {
-          this._alertService.error(err.error?.title || 'An error occurred while changing user access');
-        }
-      });
-    } else {
-      this._alertService.error("user Id is not found");
-    }
+
+  accessChange(userId: string): void {
+    this._userService.AccessChange(userId).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      complete: () => {
+        this._alertService.success("user access changed successfully");
+        this._router.navigate(['/admin/profiles']);
+      },
+      error: (err: HttpErrorResponse) => {
+        this._alertService.error(err.error?.title || 'An error occurred while changing user access');
+      }
+    });
   }
-
-
 
   ngOnDestroy() {
     this.destroy$.next();

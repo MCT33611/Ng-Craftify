@@ -1,10 +1,23 @@
-import { Component, Input, OnChanges, ViewChild, ElementRef, AfterViewChecked, NgZone, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 import { Conversation } from '../../../../models/conversation.model';
-import { MediaType, Message, MessageMedia, MessageType } from '../../../../models/message.model';
+import {
+  MediaType,
+  Message,
+  MessageMedia,
+  MessageType,
+} from '../../../../models/message.model';
 import { ChatService } from '../../services/chat.service';
 import { IApiResponse } from '../../../../models/api-response.models';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaViewerComponent } from '../media-viewer/media-viewer.component';
+import { Subject, takeUntil } from 'rxjs';
 
 interface List {
   id?: string;
@@ -19,55 +32,65 @@ interface List {
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
-  styleUrls: ['./messages.component.css']
+  styleUrls: ['./messages.component.css'],
 })
-export class MessagesComponent implements OnChanges, OnInit {
+export class MessagesComponent implements OnChanges, OnInit, OnDestroy {
   MediaType = MediaType;
   @Input({ required: true }) conversation!: Conversation;
   @Input({ required: true }) currentUserId!: string;
   messages: List[] = [];
-  chat = inject(ChatService);
-  dialog = inject(MatDialog);
+  private chat = inject(ChatService);
+  private dialog = inject(MatDialog);
 
   editingMessageId: string | null = null;
   editContent: string = '';
 
   msgLoading = false;
 
+  private destroy$ = new Subject<void>();
 
   ngOnChanges(): void {
     this.msgLoading = true;
     this.loadMessages();
   }
+
   ngOnInit(): void {
     this.setupListeners();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   loadMessages(): void {
-    this.chat.getMessagesByConversationId(this.conversation.id).subscribe({
-      next: (response: { $id: string, messages: IApiResponse<Message> }) => {
-        this.messages = response.messages.$values
-          .map((msg: any): List => ({
-            id: msg.id,
-            content: msg.content,
-            isMy: msg.fromId === this.currentUserId,
-            time: msg.timestamp ? new Date(msg.timestamp) : undefined,
-            type: msg.type,
-            isDeleted: false,
-            media: msg.media["$values"]
-          }))
-          .sort((a, b) => {
-            if (!a.time) return 1;
-            if (!b.time) return -1;
-            return a.time.getTime() - b.time.getTime();
-          });
+    this.chat
+      .getMessagesByConversationId(this.conversation.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: { $id: string; messages: IApiResponse<Message> }) => {
+          this.messages = response.messages.$values
+            .map(
+              (msg: any): List => ({
+                id: msg.id,
+                content: msg.content,
+                isMy: msg.fromId === this.currentUserId,
+                time: msg.timestamp ? new Date(msg.timestamp) : undefined,
+                type: msg.type,
+                isDeleted: false,
+                media: msg.media['$values'],
+              })
+            )
+            .sort((a, b) => {
+              if (!a.time) return 1;
+              if (!b.time) return -1;
+              return a.time.getTime() - b.time.getTime();
+            });
           console.log(this.messages);
-          
-      },
-      error: (err: any) => console.error('Error loading messages:', err),
-      complete:()=> this.msgLoading = false
-    });
+        },
+        error: (err: any) => console.error('Error loading messages:', err),
+        complete: () => (this.msgLoading = false),
+      });
   }
 
   setupListeners(): void {
@@ -84,7 +107,7 @@ export class MessagesComponent implements OnChanges, OnInit {
     });
 
     this.chat.messageDeletedListener((deletedMsgId: string) => {
-      const index = this.messages.findIndex(m => m.id === deletedMsgId);
+      const index = this.messages.findIndex((m) => m.id === deletedMsgId);
       if (index !== -1) {
         this.messages[index].isDeleted = true;
         this.messages[index].content = '';
@@ -92,12 +115,12 @@ export class MessagesComponent implements OnChanges, OnInit {
     });
 
     this.chat.messageUpdatedListener((updatedMsg: Message) => {
-      const index = this.messages.findIndex(m => m.id === updatedMsg.id);
+      const index = this.messages.findIndex((m) => m.id === updatedMsg.id);
       if (index !== -1) {
         this.messages[index] = {
           ...this.messages[index],
           content: updatedMsg.content,
-          time: updatedMsg.timestamp
+          time: updatedMsg.timestamp,
         };
       }
     });
@@ -115,28 +138,34 @@ export class MessagesComponent implements OnChanges, OnInit {
 
   saveEdit() {
     if (this.editingMessageId && this.editContent.trim()) {
-      this.chat.updateMessage(this.editingMessageId, { content: this.editContent } as Message).then(() => {
-        this.cancelEditing();
-      }).catch((error: any) => {
-        console.error('Error updating message:', error);
-      });
+      this.chat
+        .updateMessage(this.editingMessageId, {
+          content: this.editContent,
+        } as Message)
+        .then(() => {
+          this.cancelEditing();
+        })
+        .catch((error: any) => {
+          console.error('Error updating message:', error);
+        });
     }
   }
 
   openMediaViewer(media: MessageMedia) {
     this.dialog.open(MediaViewerComponent, {
-      data: media
+      data: media,
     });
   }
-  public DetermineMediaType(contentType: string): MediaType {
-    if (contentType.startsWith("image/")) {
+
+  public determineMediaType(contentType: string): MediaType {
+    if (contentType.startsWith('image/')) {
       return MediaType.Image;
-    } else if (contentType.startsWith("video/")) {
+    } else if (contentType.startsWith('video/')) {
       return MediaType.Video;
-    } else if (contentType.startsWith("audio/")) {
+    } else if (contentType.startsWith('audio/')) {
       return MediaType.Audio;
     } else {
       return MediaType.Document;
     }
-   }
+  }
 }

@@ -4,6 +4,15 @@ import { PlanService } from '../../services/plan.service';
 import { IPlan } from '../../../../../../models/iplan';
 import { Subject, takeUntil } from 'rxjs';
 
+interface PlanWithActions extends IPlan {
+  details: string;
+  delete: string;
+}
+
+interface ApiResponse<T> {
+  $values: T[];
+}
+
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -11,10 +20,10 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class ListComponent implements OnInit, OnDestroy {
 
-  data: IPlan[] = [];
+  data: PlanWithActions[] = [];
   private destroy$ = new Subject<void>();
 
-  constructor(private _planService: PlanService) {}
+  constructor(private _planService: PlanService) { }
 
   columns: ColumnConfig[] = [
     { key: 'title', type: ColumnType.Text, header: 'Title' },
@@ -28,9 +37,9 @@ export class ListComponent implements OnInit, OnDestroy {
     this._planService.getAll().pipe(
       takeUntil(this.destroy$)
     ).subscribe({
-      next: (res: any) => {
+      next: (res: ApiResponse<IPlan>) => {
         if (res && Array.isArray(res.$values)) {
-          this.data = res.$values.map((data: IPlan) => ({
+          this.data = res.$values.map((data: IPlan): PlanWithActions => ({
             ...data,
             details: `/admin/plan/edit/${data.id}`,
             delete: `/admin/plan/delete/${data.id}`
@@ -40,7 +49,7 @@ export class ListComponent implements OnInit, OnDestroy {
           // Optionally, you can add error handling here
         }
       },
-      error: (err) => {
+      error: (err: Error) => {
         console.error('Error fetching plans:', err);
         // Optionally, you can add error handling here
       }
