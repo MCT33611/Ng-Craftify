@@ -102,6 +102,7 @@ export class OtpComponent implements OnInit, OnDestroy {
       this._auth.confirmEmail(otp, this.email).pipe(
         takeUntil(this.destroy$)
       ).subscribe({
+        next:(res)=>console.log(res),
         complete: () => {
           if (this.isEmailFromParams)
             this._router.navigate(['/auth/sign-in']);
